@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import React from 'react';
 import clsx from 'clsx';
 import { ICell } from '../types';
@@ -8,6 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { endGame, flagCell, handleCell } from '../store/GameStateSlice';
 import { gameStatus } from '../utils/gameStatus';
+import CustomText from './CustomText';
 // interface CellProps extends ICell {
 //   handlePress: (row: number, col: number) => void;
 // }
@@ -27,16 +28,7 @@ const Cell = ({ row, col, isBomb, isFlipped, isFlagged, value }: ICell) => {
         } else {
           dispatch(flagCell({ row: row, col: col }));
         }
-        // const isWin = gameStatus(board, BOMBS_NUM, mode);
-
-        // if (isWin) {
-        //   alert('You found all the bombs!');
-        //   dispatch(endGame(isWin));
-        // } else {
-        //   console.log('continue');
-        // }
       }}
-      // className=" w-9 h-9 border border-gray-400 justify-center items-center"
       className={clsx(
         'w-9 h-9 border border-gray-400 justify-center items-center',
         { ['bg-slate-300']: !isFlipped }
@@ -46,7 +38,7 @@ const Cell = ({ row, col, isBomb, isFlipped, isFlagged, value }: ICell) => {
       {isFlagged ? (
         <Fontisto name="flag" color="#ef4444" size={20} />
       ) : isFlipped ? (
-        <Text>{isBomb ? '💣' : value}</Text>
+        <CustomText content={isBomb ? '💣' : value} />
       ) : mode === GameMode.FLAG ? (
         <Fontisto
           name="flag"

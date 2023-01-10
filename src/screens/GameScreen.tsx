@@ -1,14 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 
 type Props = {};
 
 const GameScreen = (props: Props) => {
-  return (
-    <View>
-      <Text>GameScreen</Text>
-    </View>
-  );
+  return <View></View>;
 };
 
 export default GameScreen;

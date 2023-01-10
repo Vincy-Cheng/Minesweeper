@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
@@ -13,6 +13,7 @@ import GameScreen from './src/screens/GameScreen';
 import RecordScreen from './src/screens/RecordScreen';
 import { useCallback, useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import CustomText from './src/components/CustomText';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -32,7 +33,7 @@ export default function App() {
   if (!fontsLoaded) {
     return (
       <View>
-        <Text>Loading ...</Text>
+        <CustomText content={'Loading ...'} />
       </View>
     );
   }
@@ -40,7 +41,10 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <PersistGate loading={<Text>Loading ...</Text>} persistor={persistor}>
+        <PersistGate
+          loading={<CustomText content={'Loading ...'} />}
+          persistor={persistor}
+        >
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen name="Home">

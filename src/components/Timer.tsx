@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { timeCounter } from '../store/GameStateSlice';
-import useTimerCounter from '../hooks/useTimerCounter';
+import { View } from 'react-native';
+import React from 'react';
+import { useAppSelector } from '../hooks';
+
+import CustomText from './CustomText';
 
 type Props = {};
 
@@ -11,9 +11,10 @@ const Timer = (props: Props) => {
 
   return (
     <View>
-      <Text className="text-lg">
-        {new Date(gameTime * 1000).toISOString().slice(11, 19)}
-      </Text>
+      <CustomText
+        className="text-lg"
+        content={new Date(gameTime * 1000).toISOString().slice(11, 19)}
+      />
     </View>
   );
 };
