@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GameMode } from '../enum';
+import { BOMBS_NUM, GameMode } from '../enum';
 import { ICell } from '../types';
 import { createBoard } from '../utils';
 import { expand } from '../utils/expand';
+import { gameStatus } from '../utils/gameStatus';
 
 interface GameState {
   board: ICell[][];
@@ -52,20 +53,40 @@ const GameStateSlice = createSlice({
           state.board[row][col].isFlipped = true;
         }
       }
+
+      if (gameStatus(state.board, BOMBS_NUM, state.mode)) {
+        alert('You found all the bombs!');
+        state.isGameOver = true;
+      }
     },
     flagCell: (state, action: PayloadAction<{ row: number; col: number }>) => {
       state.board[action.payload.row][action.payload.col].isFlagged = true;
+      if (gameStatus(state.board, BOMBS_NUM, state.mode)) {
+        alert('You found all the bombs!');
+        state.isGameOver = true;
+      }
     },
     timeCounter: (state) => {
+      // Count the time
       state.gameTime++;
     },
     changeGameMode: (state, action: PayloadAction<{ mode: GameMode }>) => {
+      // Toggle flag -> shovel
       state.mode = action.payload.mode;
+    },
+    endGame: (state, action: PayloadAction<boolean>) => {
+      state.isGameOver = action.payload;
     }
   }
 });
 
-export const { initBoard, handleCell, flagCell, timeCounter, changeGameMode } =
-  GameStateSlice.actions;
+export const {
+  initBoard,
+  handleCell,
+  flagCell,
+  timeCounter,
+  changeGameMode,
+  endGame
+} = GameStateSlice.actions;
 
 export default GameStateSlice.reducer;

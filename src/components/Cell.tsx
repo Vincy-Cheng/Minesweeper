@@ -3,16 +3,19 @@ import React from 'react';
 import clsx from 'clsx';
 import { ICell } from '../types';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { GameMode } from '../enum';
+import { BOMBS_NUM, GameMode } from '../enum';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { flagCell, handleCell } from '../store/GameStateSlice';
+import { endGame, flagCell, handleCell } from '../store/GameStateSlice';
+import { gameStatus } from '../utils/gameStatus';
 // interface CellProps extends ICell {
 //   handlePress: (row: number, col: number) => void;
 // }
 
 const Cell = ({ row, col, isBomb, isFlipped, isFlagged, value }: ICell) => {
-  const { isGameOver, mode } = useAppSelector((state) => state.gameState);
+  const { isGameOver, mode, board } = useAppSelector(
+    (state) => state.gameState
+  );
   const dispatch = useAppDispatch();
 
   return (
@@ -24,6 +27,14 @@ const Cell = ({ row, col, isBomb, isFlipped, isFlagged, value }: ICell) => {
         } else {
           dispatch(flagCell({ row: row, col: col }));
         }
+        // const isWin = gameStatus(board, BOMBS_NUM, mode);
+
+        // if (isWin) {
+        //   alert('You found all the bombs!');
+        //   dispatch(endGame(isWin));
+        // } else {
+        //   console.log('continue');
+        // }
       }}
       // className=" w-9 h-9 border border-gray-400 justify-center items-center"
       className={clsx(
