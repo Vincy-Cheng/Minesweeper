@@ -38,33 +38,34 @@ const GameStateSlice = createSlice({
       state,
       action: PayloadAction<{ row: number; col: number }>
     ) => {
-      if (state.board[action.payload.row][action.payload.col].isBomb) {
-        // state.board
-        // flip all
-        // Or alert
-        // Go Back
-        state.isGameOver = true;
-        alert('💥');
-      } else if (
-        state.board[action.payload.row][action.payload.col].value === 0
-      ) {
-        // expand
-        state.board = expand(
-          action.payload.row,
-          action.payload.col,
-          state.board
-        );
-      } else {
-        // flip cell
+      const { row, col } = action.payload;
+      if (!state.board[row][col].isFlagged) {
+        // check can flip or not
+        if (state.board[row][col].isBomb) {
+          state.board[row][col].isFlipped = true;
+          state.isGameOver = true;
+          alert('💥');
+        } else if (state.board[row][col].value === 0) {
+          // expand
+          state.board = expand(row, col, state.board);
+        } else {
+          state.board[row][col].isFlipped = true;
+        }
       }
-      state.board[action.payload.row][action.payload.col].isFlipped = true;
+    },
+    flagCell: (state, action: PayloadAction<{ row: number; col: number }>) => {
+      state.board[action.payload.row][action.payload.col].isFlagged = true;
     },
     timeCounter: (state) => {
       state.gameTime++;
+    },
+    changeGameMode: (state, action: PayloadAction<{ mode: GameMode }>) => {
+      state.mode = action.payload.mode;
     }
   }
 });
 
-export const { initBoard, handleCell, timeCounter } = GameStateSlice.actions;
+export const { initBoard, handleCell, flagCell, timeCounter, changeGameMode } =
+  GameStateSlice.actions;
 
 export default GameStateSlice.reducer;

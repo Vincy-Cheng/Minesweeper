@@ -2,6 +2,7 @@ import { ICell } from '../types';
 
 export function insertBombs(matrix: ICell[][], bombs: number) {
   let bombsToInsert = bombs;
+  // Randomly insert bombs
   while (bombsToInsert > 0) {
     let row = Math.floor(Math.random() * matrix.length);
     let col = Math.floor(Math.random() * matrix[row].length);
