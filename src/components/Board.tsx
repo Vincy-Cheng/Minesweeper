@@ -15,9 +15,6 @@ const Board = (props: Props) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(
-      initBoard({ width: BOARD_SIZE, height: BOARD_SIZE, bombs: BOMBS_NUM })
-    );
     if (!isGameOver) {
       const interval = setInterval(() => {
         dispatch(timeCounter());
@@ -26,11 +23,13 @@ const Board = (props: Props) => {
         clearInterval(interval);
       };
     }
-  }, []);
+  }, [isGameOver]);
 
-  const handlePress = (row: number, col: number) => {
-    dispatch(handleCell({ row: row, col: col }));
-  };
+  useEffect(() => {
+    dispatch(
+      initBoard({ width: BOARD_SIZE, height: BOARD_SIZE, bombs: BOMBS_NUM })
+    );
+  }, []);
 
   return (
     <SafeAreaView>
@@ -44,7 +43,7 @@ const Board = (props: Props) => {
               <Cell
                 {...cell}
                 key={'cell-' + cellIndex}
-                handlePress={handlePress}
+                // handlePress={handlePress}
               ></Cell>
             ))}
           </View>
