@@ -21,7 +21,7 @@ export function gameStatus(
       }
     });
   });
-  console.log(counter);
+
   if (counter === bombs) {
     return true;
   }
