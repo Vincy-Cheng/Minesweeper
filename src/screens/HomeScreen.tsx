@@ -5,11 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CustomText from '../components/CustomText';
 
-export type HomeProps = {
-  onLayout: () => Promise<void>;
-};
+type HomeProps = {};
 
-const HomeScreen = ({ onLayout }: HomeProps) => {
+const HomeScreen = ({}: HomeProps) => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -19,8 +17,8 @@ const HomeScreen = ({ onLayout }: HomeProps) => {
 
   return (
     <SafeAreaView className=" justify-center items-center">
-      <View onLayout={onLayout}>
-        <CustomText content="Minesweeper" />
+      <View>
+        <CustomText content="Minesweeper" styleClass="text-3xl" />
       </View>
     </SafeAreaView>
   );

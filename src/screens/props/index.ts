@@ -1,8 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { HomeProps } from '../HomeScreen';
 
 export type RootStackParamList = {
-  Home: HomeProps;
+  Home: any;
   Game: any;
   Record: any;
 };

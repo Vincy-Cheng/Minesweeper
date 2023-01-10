@@ -1,14 +1,34 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
+import clsx from 'clsx';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 type CustomTextProps = {
   content: string | Number;
-  className?: string;
+  styleClass?: string;
 };
 
-const CustomText = ({ content, className }: CustomTextProps) => {
+const CustomText = ({ content, styleClass }: CustomTextProps) => {
+  const [fontsLoaded] = useFonts({
+    IBM_Plex_Mono: require('../../assets/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf')
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return <View></View>;
+  }
   return (
-    <Text style={styles.text} className={className}>
+    <Text
+      style={styles.text}
+      onLayout={onLayoutRootView}
+      className={clsx('', { [`${styleClass}`]: styleClass })}
+    >
       {content.toString()}
     </Text>
   );
