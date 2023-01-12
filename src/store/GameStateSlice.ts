@@ -11,7 +11,6 @@ interface GameState {
   mode: GameMode;
   gameTime: number;
   isTimerRunning: boolean;
-  timeWhenLastStopped: number;
 }
 
 const initialState: GameState = {
@@ -19,8 +18,7 @@ const initialState: GameState = {
   isGameOver: false,
   mode: GameMode.SHOVEL,
   gameTime: 0,
-  isTimerRunning: false,
-  timeWhenLastStopped: 0
+  isTimerRunning: false
 };
 
 const GameStateSlice = createSlice({
@@ -85,6 +83,7 @@ const GameStateSlice = createSlice({
     },
     endGame: (state, action: PayloadAction<boolean>) => {
       state.isGameOver = action.payload;
+      state.gameTime = 0;
       state.isTimerRunning = false;
     }
   }
