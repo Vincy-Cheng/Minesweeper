@@ -5,13 +5,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CustomText from '../components/CustomText';
 import { NavigationScreenProp } from './props';
-import { useAppDispatch } from '../hooks';
-import { isTimeRunning } from '../store/GameStateSlice';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { initBoard, isTimeRunning } from '../store/GameStateSlice';
+import { BOARD_SIZE, BOMBS_NUM } from '../enum';
 
 type HomeProps = {};
 
 const HomeScreen = ({}: HomeProps) => {
   const navigation = useNavigation<NavigationScreenProp>();
+  const { board, isGameOver } = useAppSelector((state) => state.gameState);
   const dispatch = useAppDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -25,18 +27,40 @@ const HomeScreen = ({}: HomeProps) => {
       <CustomText content="Minesweeper" styleClass="text-3xl text-center" />
 
       <View className="flex flex-col space-y-4 pt-6">
-        <TouchableOpacity
-          className="bg-neutral-300 rounded-full p-2"
-          onPress={() => {
-            navigation.navigate('Game');
-            dispatch(isTimeRunning(true));
-          }}
-        >
-          <CustomText
-            content={'New Game'}
-            styleClass="text-center text-lg"
-          ></CustomText>
-        </TouchableOpacity>
+        {board.length > 0 && !isGameOver ? (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Game');
+              dispatch(isTimeRunning(true));
+            }}
+            className="bg-neutral-300 rounded-full p-2"
+          >
+            <CustomText
+              content={'Back to Game'}
+              styleClass="text-center text-lg"
+            ></CustomText>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(
+                initBoard({
+                  width: BOARD_SIZE,
+                  height: BOARD_SIZE,
+                  bombs: BOMBS_NUM
+                })
+              );
+              navigation.navigate('Game');
+            }}
+            className="bg-neutral-300 rounded-full p-2"
+          >
+            <CustomText
+              content={'New Game'}
+              styleClass="text-center text-lg"
+            ></CustomText>
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity className="bg-neutral-300 rounded-full p-2">
           <CustomText
             content={'Record'}

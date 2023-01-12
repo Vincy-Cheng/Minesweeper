@@ -20,13 +20,13 @@ const Board = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
-  useLayoutEffect(() => {
-    if (!(board.length > 0)) {
-      dispatch(
-        initBoard({ width: BOARD_SIZE, height: BOARD_SIZE, bombs: BOMBS_NUM })
-      );
-    }
-  }, []);
+  //   useLayoutEffect(() => {
+  //     if (!(board.length > 0)) {
+  //       dispatch(
+  //         initBoard({ width: BOARD_SIZE, height: BOARD_SIZE, bombs: BOMBS_NUM })
+  //       );
+  //     }
+  //   }, []);
 
   return (
     <View className="h-full justify-center items-center">
