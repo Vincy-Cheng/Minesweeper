@@ -11,6 +11,8 @@ import GameScreen from './src/screens/GameScreen';
 import RecordScreen from './src/screens/RecordScreen';
 import * as SplashScreen from 'expo-splash-screen';
 import CustomText from './src/components/CustomText';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

@@ -10,13 +10,17 @@ interface GameState {
   isGameOver: boolean;
   mode: GameMode;
   gameTime: number;
+  isTimerRunning: boolean;
+  timeWhenLastStopped: number;
 }
 
 const initialState: GameState = {
   board: [],
   isGameOver: false,
   mode: GameMode.SHOVEL,
-  gameTime: 0
+  gameTime: 0,
+  isTimerRunning: false,
+  timeWhenLastStopped: 0
 };
 
 const GameStateSlice = createSlice({
@@ -34,6 +38,7 @@ const GameStateSlice = createSlice({
       });
       state.isGameOver = false;
       state.gameTime = 0;
+      state.isTimerRunning = true;
     },
     handleCell: (
       state,
@@ -70,12 +75,17 @@ const GameStateSlice = createSlice({
       // Count the time
       state.gameTime++;
     },
+    isTimeRunning: (state, action: PayloadAction<boolean>) => {
+      // Count the time
+      state.isTimerRunning = action.payload;
+    },
     changeGameMode: (state, action: PayloadAction<{ mode: GameMode }>) => {
       // Toggle flag -> shovel
       state.mode = action.payload.mode;
     },
     endGame: (state, action: PayloadAction<boolean>) => {
       state.isGameOver = action.payload;
+      state.isTimerRunning = false;
     }
   }
 });
@@ -85,6 +95,7 @@ export const {
   handleCell,
   flagCell,
   timeCounter,
+  isTimeRunning,
   changeGameMode,
   endGame
 } = GameStateSlice.actions;

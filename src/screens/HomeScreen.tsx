@@ -1,15 +1,18 @@
-import { View, Text } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import React, { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CustomText from '../components/CustomText';
-import CustomButton from '../components/CustomButton';
+import { NavigationScreenProp } from './props';
+import { useAppDispatch } from '../hooks';
+import { isTimeRunning } from '../store/GameStateSlice';
 
 type HomeProps = {};
 
 const HomeScreen = ({}: HomeProps) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationScreenProp>();
+  const dispatch = useAppDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false
@@ -18,21 +21,28 @@ const HomeScreen = ({}: HomeProps) => {
 
   return (
     <SafeAreaView className=" justify-center items-center">
-      <View className="">
-        <CustomText content="Minesweeper" styleClass="text-3xl text-center" />
+      {/* <View className=""> */}
+      <CustomText content="Minesweeper" styleClass="text-3xl text-center" />
 
-        <View className="">
-          <CustomButton
-            text={'New Game'}
-            buttonStyle="rounded-full bg-green-300"
-            textStyle="text-center"
-          />
-          <CustomButton
-            text={'Record'}
-            buttonStyle="rounded-full bg-green-300"
-            textStyle="text-center"
-          />
-        </View>
+      <View className="flex flex-col space-y-4 pt-6">
+        <TouchableOpacity
+          className="bg-neutral-300 rounded-full p-2"
+          onPress={() => {
+            navigation.navigate('Game');
+            dispatch(isTimeRunning(true));
+          }}
+        >
+          <CustomText
+            content={'New Game'}
+            styleClass="text-center text-lg"
+          ></CustomText>
+        </TouchableOpacity>
+        <TouchableOpacity className="bg-neutral-300 rounded-full p-2">
+          <CustomText
+            content={'Record'}
+            styleClass="text-center text-lg"
+          ></CustomText>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
