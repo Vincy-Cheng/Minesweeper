@@ -1,47 +1,55 @@
-import { View } from 'react-native';
-import React, { useEffect, useLayoutEffect } from 'react';
+import { Animated, ScrollView, View, PanResponder } from 'react-native';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Cell from './Cell';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import {
-  handleCell,
-  initBoard,
-  timeCounter,
-  isTimeRunning
-} from '../store/GameStateSlice';
-import ControlPanel from './ControlPanel';
-import { BOARD_SIZE, BOMBS_NUM } from '../enum';
-import useTimerCounter from '../hooks/useTimerCounter';
 
 type Props = {};
 
 const Board = (props: Props) => {
   const { board } = useAppSelector((state) => state.gameState);
 
-  const dispatch = useAppDispatch();
-
-  //   useLayoutEffect(() => {
-  //     if (!(board.length > 0)) {
-  //       dispatch(
-  //         initBoard({ width: BOARD_SIZE, height: BOARD_SIZE, bombs: BOMBS_NUM })
-  //       );
-  //     }
-  //   }, []);
+  const pan = useRef<any>(new Animated.ValueXY()).current;
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        pan.setOffset({
+          x: pan.x._value,
+          y: pan.y._value
+        });
+      },
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+        useNativeDriver: false
+      }),
+      onPanResponderRelease: () => {
+        pan.flattenOffset();
+      }
+    })
+  ).current;
 
   return (
-    <View className="h-full justify-center items-center">
-      {board.map((row, rowIndex) => (
-        <View key={rowIndex} className="flex flex-row">
-          {row.map((cell, cellIndex) => (
-            <Cell
-              {...cell}
-              key={'cell-' + cellIndex}
-              // handlePress={handlePress}
-            ></Cell>
-          ))}
-        </View>
-      ))}
-    </View>
+    <Animated.View
+      style={{
+        transform: [{ translateX: pan.x }, { translateY: pan.y }]
+      }}
+      {...panResponder.panHandlers}
+    >
+      <View
+        className="h-full justify-center items-center overflow-auto"
+        onResponderMove={(event) => {
+          console.log(event.nativeEvent);
+        }}
+      >
+        {board.map((row, rowIndex) => (
+          <View key={rowIndex} className="flex flex-row">
+            {row.map((cell, cellIndex) => (
+              <Cell {...cell} key={'cell-' + cellIndex}></Cell>
+            ))}
+          </View>
+        ))}
+      </View>
+    </Animated.View>
   );
 };
 

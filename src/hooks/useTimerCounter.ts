@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '.';
 import { timeCounter, isTimeRunning } from '../store/GameStateSlice';
 
 type Props = {};
 
 const useTimerCounter = () => {
-  const { gameTime } = useAppSelector((state) => state.gameState);
-
   const [counter, setCounter] = useState<NodeJS.Timer | null>(null);
 
   const dispatch = useAppDispatch();
@@ -16,7 +14,7 @@ const useTimerCounter = () => {
       setCounter(
         setInterval(() => {
           dispatch(timeCounter());
-          console.log(new Date().toTimeString());
+          // console.log(new Date().toTimeString());
         }, 1000)
       );
     }

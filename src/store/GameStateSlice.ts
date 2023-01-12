@@ -83,7 +83,7 @@ const GameStateSlice = createSlice({
     },
     endGame: (state, action: PayloadAction<boolean>) => {
       state.isGameOver = action.payload;
-      state.gameTime = 0;
+      // state.gameTime = 0;
       state.isTimerRunning = false;
     }
   }
