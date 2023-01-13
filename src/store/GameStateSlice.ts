@@ -4,6 +4,7 @@ import { ICell } from '../types';
 import { createBoard } from '../utils';
 import { expand } from '../utils/expand';
 import { gameStatus } from '../utils/gameStatus';
+import { getNeighbors } from '../utils/getNeighbors';
 
 interface GameState {
   board: ICell[][];
@@ -43,7 +44,10 @@ const GameStateSlice = createSlice({
       action: PayloadAction<{ row: number; col: number }>
     ) => {
       const { row, col } = action.payload;
-      if (!state.board[row][col].isFlagged) {
+      if (
+        !state.board[row][col].isFlagged ||
+        !state.board[row][col].isFlipped
+      ) {
         // check can flip or not
         if (state.board[row][col].isBomb) {
           state.board[row][col].isFlipped = true;
@@ -53,17 +57,45 @@ const GameStateSlice = createSlice({
           // expand
           state.board = expand(row, col, state.board);
         } else {
+          // Flipped the cell
           state.board[row][col].isFlipped = true;
         }
       }
-
+      // Check Game Status
       if (gameStatus(state.board, BOMBS_NUM, state.mode)) {
         alert('You found all the bombs!');
         state.isGameOver = true;
       }
     },
     flagCell: (state, action: PayloadAction<{ row: number; col: number }>) => {
-      state.board[action.payload.row][action.payload.col].isFlagged = true;
+      const { row, col } = action.payload;
+      if (state.board[row][col].isFlipped) {
+        // Get neighbors
+        const neighbors = getNeighbors(row, col, state.board);
+        const flipCell: number[][] = [];
+        for (const neighbor of neighbors) {
+          const [neighborRow, neighborCol] = neighbor;
+          if (!state.board[neighborRow][neighborCol].isFlagged) {
+            flipCell.push(neighbor);
+          }
+        }
+
+        // Flip those cell
+        for (const flip of flipCell) {
+          const [flipRow, flipCol] = flip;
+          state.board[flipRow][flipCol].isFlipped = true;
+          if (state.board[flipRow][flipCol].isBomb) {
+            state.isGameOver = true;
+            alert('💥');
+          }
+        }
+      } else {
+        // Toggle the cell's flag
+        if (state.board[row][col].isFlagged) {
+          state.board[row][col].isFlagged = false;
+        } else state.board[row][col].isFlagged = true;
+      }
+      // Check Game Status
       if (gameStatus(state.board, BOMBS_NUM, state.mode)) {
         alert('You found all the bombs!');
         state.isGameOver = true;
