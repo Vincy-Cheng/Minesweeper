@@ -1,6 +1,6 @@
 import { Animated, ScrollView, View, PanResponder } from 'react-native';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import Cell from './Cell';
 import { useAppDispatch, useAppSelector } from '../hooks';
 
