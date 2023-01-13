@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { useColorScheme } from 'nativewind';
 import { BOARD_SIZE, BOMBS_NUM } from '../enum';
 import { isTimeRunning, initBoard } from '../store/GameStateSlice';
+import DarkModeSwitch from '../components/DarkModeSwitch';
 
 type HomeProps = {};
 
@@ -25,15 +26,13 @@ const HomeScreen = ({}: HomeProps) => {
   }, []);
 
   return (
-    <SafeAreaView className="justify-center items-center">
-      <CustomText
-        content="Minesweeper"
-        styleClass="text-3xl text-center dark:text-red-300"
-      />
-      <View>
-        <Text onPress={toggleColorScheme} className="dark:text-red-300">
-          test {`Try clicking me! ${colorScheme === 'dark' ? '🌙' : '🌞'}`}
-        </Text>
+    <SafeAreaView className="h-full items-center dark:bg-zinc-800 ">
+      <View className="flex-row items-center px-2">
+        <CustomText
+          content="Minesweeper"
+          styleClass="text-3xl text-center dark:text-white flex-1"
+        />
+        <DarkModeSwitch></DarkModeSwitch>
       </View>
 
       <View className="flex flex-col space-y-4 pt-6">

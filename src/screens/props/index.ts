@@ -4,6 +4,7 @@ export type RootStackParamList = {
   Home: any;
   Game: any;
   Record: any;
+  Setting: any;
 };
 
 export type NavigationScreenProp = StackNavigationProp<RootStackParamList>;
