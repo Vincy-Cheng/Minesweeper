@@ -6,11 +6,13 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { BOARD_SIZE, BOMBS_NUM, GameMode } from '../enum';
 import { changeGameMode, initBoard } from '../store/GameStateSlice';
 import Timer from './Timer';
+import { useColorScheme } from 'nativewind';
 
 type Props = {};
 
 const ControlPanel = (props: Props) => {
   const mode = useAppSelector((state) => state.gameState.mode);
+  const { colorScheme } = useColorScheme();
   const dispatch = useAppDispatch();
   return (
     <View className="flex-row items-center space-x-4 p-2">
@@ -31,6 +33,7 @@ const ControlPanel = (props: Props) => {
         <MaterialCommunityIcons
           name="restart"
           size={30}
+          color={colorScheme === 'dark' ? '#ffffff' : '#000000'}
         ></MaterialCommunityIcons>
       </TouchableOpacity>
       <TouchableOpacity

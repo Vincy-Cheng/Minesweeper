@@ -7,17 +7,15 @@ import { BOMBS_NUM, GameMode } from '../enum';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { endGame, flagCell, handleCell } from '../store/GameStateSlice';
-import { gameStatus } from '../utils/gameStatus';
 import CustomText from './CustomText';
-// interface CellProps extends ICell {
-//   handlePress: (row: number, col: number) => void;
-// }
+import { useColorScheme } from 'nativewind';
 
 const Cell = ({ row, col, isBomb, isFlipped, isFlagged, value }: ICell) => {
   const { isGameOver, mode, board } = useAppSelector(
     (state) => state.gameState
   );
   const dispatch = useAppDispatch();
+  const { colorScheme } = useColorScheme();
 
   return (
     <Pressable
@@ -30,23 +28,36 @@ const Cell = ({ row, col, isBomb, isFlipped, isFlagged, value }: ICell) => {
         }
       }}
       className={clsx(
-        'w-9 h-9 border border-gray-400 justify-center items-center',
-        { ['bg-slate-300']: !isFlipped }
+        'w-9 h-9 border border-gray-400 justify-center items-center ',
+        { ['bg-slate-300 dark:bg-zinc-800']: !isFlipped }
       )}
     >
       {/* Check whether flag or not, Yes -> show red flag, No -> check flipped or not */}
       {isFlagged ? (
         <Fontisto name="flag" color="#ef4444" size={20} />
       ) : isFlipped ? (
-        <CustomText content={isBomb ? '💣' : value} />
+        <CustomText
+          content={isBomb ? '💣' : value}
+          styleClass="dark:text-white"
+        />
       ) : mode === GameMode.FLAG ? (
         <Fontisto
           name="flag"
-          color={isFlagged ? '#ef4444' : '#a3a3a3'}
+          color={
+            isFlagged
+              ? '#ef4444'
+              : colorScheme === 'dark'
+              ? '#525252'
+              : '#a3a3a3'
+          }
           size={20}
         />
       ) : (
-        <MaterialCommunityIcons name="shovel" color={'#a3a3a3'} size={20} />
+        <MaterialCommunityIcons
+          name="shovel"
+          color={colorScheme === 'dark' ? '#525252' : '#a3a3a3'}
+          size={20}
+        />
       )}
     </Pressable>
   );

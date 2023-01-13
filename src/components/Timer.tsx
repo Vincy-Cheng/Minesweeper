@@ -12,7 +12,7 @@ const Timer = (props: Props) => {
   return (
     <View>
       <CustomText
-        styleClass="text-lg"
+        styleClass="text-lg dark:text-white"
         content={new Date(gameTime * 1000).toISOString().slice(11, 19)}
       />
     </View>

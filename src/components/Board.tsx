@@ -2,13 +2,12 @@ import { Animated, ScrollView, View, PanResponder } from 'react-native';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import Cell from './Cell';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { useAppSelector } from '../hooks';
 
 type Props = {};
 
 const Board = (props: Props) => {
   const { board } = useAppSelector((state) => state.gameState);
-
   const pan = useRef<any>(new Animated.ValueXY()).current;
   const panResponder = useRef(
     PanResponder.create({
