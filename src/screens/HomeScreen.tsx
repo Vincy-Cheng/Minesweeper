@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View, Text, Pressable } from 'react-native';
 import React, { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,14 +6,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../components/CustomText';
 import { NavigationScreenProp } from './props';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { initBoard, isTimeRunning } from '../store/GameStateSlice';
+import { useColorScheme } from 'nativewind';
 import { BOARD_SIZE, BOMBS_NUM } from '../enum';
+import { isTimeRunning, initBoard } from '../store/GameStateSlice';
 
 type HomeProps = {};
 
 const HomeScreen = ({}: HomeProps) => {
   const navigation = useNavigation<NavigationScreenProp>();
   const { board, isGameOver } = useAppSelector((state) => state.gameState);
+  // const { mode } = useAppSelector((state) => state.colorScheme);
+  const { colorScheme, toggleColorScheme } = useColorScheme();
   const dispatch = useAppDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -22,9 +25,16 @@ const HomeScreen = ({}: HomeProps) => {
   }, []);
 
   return (
-    <SafeAreaView className=" justify-center items-center">
-      {/* <View className=""> */}
-      <CustomText content="Minesweeper" styleClass="text-3xl text-center" />
+    <SafeAreaView className="justify-center items-center">
+      <CustomText
+        content="Minesweeper"
+        styleClass="text-3xl text-center dark:text-red-300"
+      />
+      <View>
+        <Text onPress={toggleColorScheme} className="dark:text-red-300">
+          test {`Try clicking me! ${colorScheme === 'dark' ? '🌙' : '🌞'}`}
+        </Text>
+      </View>
 
       <View className="flex flex-col space-y-4 pt-6">
         {board.length > 0 && !isGameOver ? (

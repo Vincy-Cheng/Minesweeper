@@ -5,3 +5,8 @@ export enum GameMode {
   SHOVEL,
   FLAG
 }
+
+export enum ColorScheme {
+  DARK = 'dark',
+  LIGHT = 'light'
+}
