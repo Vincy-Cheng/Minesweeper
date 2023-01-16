@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BOMBS_NUM, GameMode } from '../enum';
 import { ICell } from '../types';
-import { createBoard } from '../utils';
-import { expand } from '../utils/expand';
-import { flipFlaggedCell } from '../utils/flipFlaggedCell';
-import { gameStatus } from '../utils/gameStatus';
-import { warnFlagCell } from '../utils/warnFlagCell';
+import {
+  createBoard,
+  expand,
+  flipFlaggedCell,
+  gameStatus,
+  warnFlagCell
+} from '../utils';
 
 interface GameState {
   board: ICell[][];
