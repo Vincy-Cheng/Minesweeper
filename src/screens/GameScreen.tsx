@@ -37,8 +37,9 @@ const GameScreen = (props: Props) => {
     }
   }, [isTimerRunning, isGameOver]);
   return (
-    <SafeAreaView className="bg-white dark:bg-zinc-600 ">
-      <View className="flex flex-row items-center justify-between px-4 bg-white dark:bg-zinc-600 ">
+    // <SafeAreaView>
+    <View className="bg-white dark:bg-zinc-600 ">
+      <View className="pt-12 flex flex-row items-center justify-between px-4 z-50 bg-white dark:bg-zinc-600 ">
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -56,7 +57,7 @@ const GameScreen = (props: Props) => {
         <ControlPanel />
       </View>
       <Board />
-    </SafeAreaView>
+    </View>
   );
 };
 

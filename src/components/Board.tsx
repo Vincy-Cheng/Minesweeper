@@ -35,7 +35,7 @@ const Board = (props: Props) => {
       {...panResponder.panHandlers}
     >
       <View
-        className="h-full justify-center items-center overflow-auto"
+        className="h-full justify-center items-center"
         onResponderMove={(event) => {
           console.log(event.nativeEvent);
         }}
