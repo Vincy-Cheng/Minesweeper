@@ -12,9 +12,11 @@ export function flipFlaggedCell(row: number, col: number, board: ICell[][]) {
     const [neighborRow, neighborCol] = neighbor;
     if (board[neighborRow][neighborCol].isFlagged) flags++;
 
+    // Only want cell is not flagged
     return !board[neighborRow][neighborCol].isFlagged;
   });
   // Return the cells that needed to be flipped ONLY IF value = actual flagged cells
+  // Only allow flipping when the flag number = to cell's value
   if (flags === board[row][col].value) {
     return flipCell;
   }
