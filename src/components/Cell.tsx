@@ -19,9 +19,7 @@ const Cell = ({
   value,
   isWarned
 }: ICell) => {
-  const { isGameOver, mode, board } = useAppSelector(
-    (state) => state.gameState
-  );
+  const { isGameOver, mode } = useAppSelector((state) => state.gameState);
   const dispatch = useAppDispatch();
   const { colorScheme } = useColorScheme();
 

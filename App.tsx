@@ -11,8 +11,7 @@ import GameScreen from './src/screens/GameScreen';
 import RecordScreen from './src/screens/RecordScreen';
 import * as SplashScreen from 'expo-splash-screen';
 import CustomText from './src/components/CustomText';
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+import Navigation from './src/layout/Navigation';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,13 +23,7 @@ export default function App() {
           loading={<CustomText content={'Loading ...'} />}
           persistor={persistor}
         >
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Game" component={GameScreen} />
-              <Stack.Screen name="Record" component={RecordScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <Navigation />
         </PersistGate>
       </Provider>
     </SafeAreaProvider>

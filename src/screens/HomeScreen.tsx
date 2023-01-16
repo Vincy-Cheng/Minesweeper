@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../components/CustomText';
 import { NavigationScreenProp } from './props';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { useColorScheme } from 'nativewind';
 import { BOARD_SIZE, BOMBS_NUM } from '../enum';
 import { isTimeRunning, initBoard } from '../store/GameStateSlice';
 import DarkModeSwitch from '../components/DarkModeSwitch';
@@ -16,8 +15,7 @@ type HomeProps = {};
 const HomeScreen = ({}: HomeProps) => {
   const navigation = useNavigation<NavigationScreenProp>();
   const { board, isGameOver } = useAppSelector((state) => state.gameState);
-  // const { mode } = useAppSelector((state) => state.colorScheme);
-  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const { mode } = useAppSelector((state) => state.colorScheme);
   const dispatch = useAppDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({

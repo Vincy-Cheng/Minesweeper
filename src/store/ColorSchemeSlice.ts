@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ColorSchemeName } from 'nativewind/dist/style-sheet/color-scheme';
 import { ColorScheme } from '../enum';
 
 type ColorSchemeState = {
@@ -13,12 +14,10 @@ const ColorSchemeSlice = createSlice({
   name: 'colorScheme',
   initialState,
   reducers: {
-    toggle: (state) => {
-      if (state.mode === ColorScheme.DARK) {
+    toggle: (state, action: PayloadAction<ColorSchemeName>) => {
+      if ((action.payload as ColorScheme) === ColorScheme.DARK) {
         state.mode = ColorScheme.LIGHT;
-      } else {
-        state.mode = ColorScheme.DARK;
-      }
+      } else state.mode = ColorScheme.DARK;
     }
   }
 });

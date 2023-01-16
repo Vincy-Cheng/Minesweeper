@@ -37,7 +37,6 @@ const GameScreen = (props: Props) => {
     }
   }, [isTimerRunning, isGameOver]);
   return (
-    // <SafeAreaView>
     <View className="bg-white dark:bg-zinc-600 ">
       <View className="pt-12 flex flex-row items-center justify-between px-4 z-50 bg-white dark:bg-zinc-600 ">
         <TouchableOpacity
