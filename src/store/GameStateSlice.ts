@@ -5,7 +5,6 @@ import { createBoard } from '../utils';
 import { expand } from '../utils/expand';
 import { flipFlaggedCell } from '../utils/flipFlaggedCell';
 import { gameStatus } from '../utils/gameStatus';
-import { getNeighbors } from '../utils/getNeighbors';
 import { warnFlagCell } from '../utils/warnFlagCell';
 
 interface GameState {
@@ -87,8 +86,9 @@ const GameStateSlice = createSlice({
           }
         }
       } else {
+        // Flag the cell
         state.board[row][col].isFlagged = !state.board[row][col].isFlagged;
-
+        // Check the neighbors cell, need warning or not
         const [warnCell, cleanCell] = warnFlagCell(row, col, state.board);
 
         for (const warn of warnCell) {
