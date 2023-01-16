@@ -3,8 +3,10 @@ import { BOMBS_NUM, GameMode } from '../enum';
 import { ICell } from '../types';
 import { createBoard } from '../utils';
 import { expand } from '../utils/expand';
+import { flipFlaggedCell } from '../utils/flipFlaggedCell';
 import { gameStatus } from '../utils/gameStatus';
 import { getNeighbors } from '../utils/getNeighbors';
+import { warnFlagCell } from '../utils/warnFlagCell';
 
 interface GameState {
   board: ICell[][];
@@ -69,32 +71,37 @@ const GameStateSlice = createSlice({
     },
     flagCell: (state, action: PayloadAction<{ row: number; col: number }>) => {
       const { row, col } = action.payload;
-      if (state.board[row][col].isFlipped) {
-        // Get neighbors
-        const neighbors = getNeighbors(row, col, state.board);
-        const flipCell: number[][] = [];
-        for (const neighbor of neighbors) {
-          const [neighborRow, neighborCol] = neighbor;
-          if (!state.board[neighborRow][neighborCol].isFlagged) {
-            flipCell.push(neighbor);
-          }
-        }
 
-        // Flip those cell
+      if (state.board[row][col].isFlipped) {
+        // Flip the cells by Flagged cells
+        // Find the cells that need to be flipped
+        const flipCell = flipFlaggedCell(row, col, state.board);
+        // Loop those to flip
         for (const flip of flipCell) {
           const [flipRow, flipCol] = flip;
           state.board[flipRow][flipCol].isFlipped = true;
+          // Check if it is a bomb
           if (state.board[flipRow][flipCol].isBomb) {
             state.isGameOver = true;
             alert('💥');
           }
         }
       } else {
-        // Toggle the cell's flag
-        if (state.board[row][col].isFlagged) {
-          state.board[row][col].isFlagged = false;
-        } else state.board[row][col].isFlagged = true;
+        state.board[row][col].isFlagged = !state.board[row][col].isFlagged;
+
+        const [warnCell, cleanCell] = warnFlagCell(row, col, state.board);
+
+        for (const warn of warnCell) {
+          const [warnRow, warnCol] = warn;
+          state.board[warnRow][warnCol].isWarned = true;
+        }
+
+        for (const clean of cleanCell) {
+          const [cleanRow, cleanCol] = clean;
+          state.board[cleanRow][cleanCol].isWarned = false;
+        }
       }
+
       // Check Game Status
       if (gameStatus(state.board, BOMBS_NUM, state.mode)) {
         alert('You found all the bombs!');

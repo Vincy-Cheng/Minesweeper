@@ -4,5 +4,6 @@ export interface ICell {
   isBomb: boolean;
   isFlipped: boolean;
   isFlagged: boolean;
+  isWarned: boolean;
   value: number;
 }

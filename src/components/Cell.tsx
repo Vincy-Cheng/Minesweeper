@@ -10,7 +10,15 @@ import { endGame, flagCell, handleCell } from '../store/GameStateSlice';
 import CustomText from './CustomText';
 import { useColorScheme } from 'nativewind';
 
-const Cell = ({ row, col, isBomb, isFlipped, isFlagged, value }: ICell) => {
+const Cell = ({
+  row,
+  col,
+  isBomb,
+  isFlipped,
+  isFlagged,
+  value,
+  isWarned
+}: ICell) => {
   const { isGameOver, mode, board } = useAppSelector(
     (state) => state.gameState
   );
@@ -29,7 +37,11 @@ const Cell = ({ row, col, isBomb, isFlipped, isFlagged, value }: ICell) => {
       }}
       className={clsx(
         'w-9 h-9 border border-gray-400 justify-center items-center ',
-        { ['bg-slate-300 dark:bg-zinc-800']: !isFlipped }
+        !isFlipped
+          ? 'bg-slate-300 dark:bg-zinc-800'
+          : isWarned
+          ? 'bg-amber-300'
+          : ''
       )}
     >
       {/* Check whether flag or not, Yes -> show red flag, No -> check flipped or not */}

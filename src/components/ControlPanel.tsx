@@ -15,7 +15,7 @@ const ControlPanel = (props: Props) => {
   const { colorScheme } = useColorScheme();
   const dispatch = useAppDispatch();
   return (
-    <View className="flex-row items-center space-x-4 p-2">
+    <View className="flex-row items-center space-x-4 p-2 z-50">
       <View>
         <Timer />
       </View>
