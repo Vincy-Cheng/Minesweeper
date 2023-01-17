@@ -34,22 +34,20 @@ const CustomModal = (props: Props) => {
               onPress={() => {
                 dispatch(closeReminder());
               }}
+              className="rounded-full"
               color={colorScheme === 'dark' ? '#ffffff' : '#000000'}
             />
           </TouchableOpacity>
           <View className="px-3 space-y-2 ">
-            <View>
-              <CustomText
-                styleClass="text-center text-xl dark:text-white"
-                content={statusMessage ?? ''}
-              />
-            </View>
-            <View>
-              <CustomText
-                content={'Close the modal and start a new Game!'}
-                styleClass="text-center pb-4 text-neutral-600 dark:text-white"
-              />
-            </View>
+            <CustomText
+              styleClass="text-center text-xl dark:text-white"
+              content={statusMessage ?? ''}
+            />
+
+            <CustomText
+              content={'Close the modal and start a new Game!'}
+              styleClass="text-center pb-4 text-neutral-600 dark:text-white"
+            />
           </View>
         </View>
       </View>

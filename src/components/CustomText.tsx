@@ -9,9 +9,10 @@ SplashScreen.preventAutoHideAsync();
 type CustomTextProps = {
   content: string | Number;
   styleClass?: string;
+  viewStyle?: string;
 };
 
-const CustomText = ({ content, styleClass }: CustomTextProps) => {
+const CustomText = ({ content, styleClass, viewStyle }: CustomTextProps) => {
   const [fontsLoaded] = useFonts({
     IBM_Plex_Mono: require('../../assets/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf')
   });
@@ -25,13 +26,17 @@ const CustomText = ({ content, styleClass }: CustomTextProps) => {
     return null;
   }
   return (
-    <Text
-      style={styles.text}
+    <View
       onLayout={onLayoutRootView}
-      className={clsx('', { [`${styleClass}`]: styleClass })}
+      className={clsx('', { [`${viewStyle}`]: viewStyle })}
     >
-      {content.toString()}
-    </Text>
+      <Text
+        style={styles.text}
+        className={clsx('', { [`${styleClass}`]: styleClass })}
+      >
+        {content.toString()}
+      </Text>
+    </View>
   );
 };
 

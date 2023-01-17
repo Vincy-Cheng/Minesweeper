@@ -24,11 +24,13 @@ const HomeScreen = ({}: HomeProps) => {
 
   return (
     <SafeAreaView className="h-full items-center dark:bg-zinc-800 ">
-      <View className="flex-row items-center px-2">
+      <View className="flex flex-row items-center px-2">
         <CustomText
           content="Minesweeper"
-          styleClass="text-3xl text-center dark:text-white flex-1"
+          styleClass="text-3xl text-center dark:text-white"
+          viewStyle="flex-1"
         />
+
         <DarkModeSwitch></DarkModeSwitch>
       </View>
 
