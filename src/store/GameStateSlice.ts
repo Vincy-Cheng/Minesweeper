@@ -15,6 +15,7 @@ interface GameState {
   mode: GameMode;
   gameTime: number;
   isTimerRunning: boolean;
+  statusMessage: string;
 }
 
 const initialState: GameState = {
@@ -22,7 +23,8 @@ const initialState: GameState = {
   isGameOver: false,
   mode: GameMode.SHOVEL,
   gameTime: 0,
-  isTimerRunning: false
+  isTimerRunning: false,
+  statusMessage: ''
 };
 
 const GameStateSlice = createSlice({
@@ -41,6 +43,7 @@ const GameStateSlice = createSlice({
       state.isGameOver = false;
       state.gameTime = 0;
       state.isTimerRunning = true;
+      state.statusMessage = '';
     },
     handleCell: (
       state,
@@ -55,7 +58,7 @@ const GameStateSlice = createSlice({
         if (state.board[row][col].isBomb) {
           state.board[row][col].isFlipped = true;
           state.isGameOver = true;
-          alert('💥');
+          state.statusMessage = '💥';
         } else if (state.board[row][col].value === 0) {
           // expand
           state.board = expand(row, col, state.board);
@@ -65,8 +68,8 @@ const GameStateSlice = createSlice({
         }
       }
       // Check Game Status
-      if (gameStatus(state.board, BOMBS_NUM, state.mode)) {
-        alert('You found all the bombs!');
+      if (!state.isGameOver && gameStatus(state.board, BOMBS_NUM, state.mode)) {
+        state.statusMessage = 'You found all the bombs!';
         state.isGameOver = true;
       }
     },
@@ -84,7 +87,7 @@ const GameStateSlice = createSlice({
           // Check if it is a bomb
           if (state.board[flipRow][flipCol].isBomb) {
             state.isGameOver = true;
-            alert('💥');
+            state.statusMessage = '💥';
           }
         }
       } else {
@@ -106,7 +109,7 @@ const GameStateSlice = createSlice({
 
       // Check Game Status
       if (gameStatus(state.board, BOMBS_NUM, state.mode)) {
-        alert('You found all the bombs!');
+        state.statusMessage = 'You found all the bombs!';
         state.isGameOver = true;
       }
     },
@@ -126,6 +129,9 @@ const GameStateSlice = createSlice({
       state.isGameOver = action.payload;
       // state.gameTime = 0;
       state.isTimerRunning = false;
+    },
+    closeReminder: (state) => {
+      state.statusMessage = '';
     }
   }
 });
@@ -137,7 +143,8 @@ export const {
   timeCounter,
   isTimeRunning,
   changeGameMode,
-  endGame
+  endGame,
+  closeReminder
 } = GameStateSlice.actions;
 
 export default GameStateSlice.reducer;

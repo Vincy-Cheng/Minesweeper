@@ -1,8 +1,7 @@
-import { TouchableOpacity, View, Text, Pressable } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import React, { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import CustomText from '../components/CustomText';
 import { NavigationScreenProp } from './props';
 import { useAppDispatch, useAppSelector } from '../hooks';

@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import clsx from 'clsx';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type CustomTextProps = {
   content: string | Number;
@@ -21,7 +22,7 @@ const CustomText = ({ content, styleClass }: CustomTextProps) => {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return <View></View>;
+    return null;
   }
   return (
     <Text
