@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BOMBS_NUM, GameMode } from '../enum';
+import useTimerCounter from '../hooks/useTimerCounter';
 import { ICell } from '../types';
 import {
   createBoard,

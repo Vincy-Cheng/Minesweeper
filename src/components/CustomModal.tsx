@@ -17,6 +17,9 @@ const CustomModal = (props: Props) => {
       animationType="slide"
       transparent={true}
       visible={statusMessage !== ''}
+      onRequestClose={() => {
+        dispatch(closeReminder());
+      }}
     >
       <View className="flex-1 justify-center items-center">
         <View
@@ -24,7 +27,7 @@ const CustomModal = (props: Props) => {
             'w-40 h-fit bg-white rounded-xl dark:bg-neutral-500 shadow dark:shadow-none'
           }
         >
-          <TouchableOpacity className="ml-auto p-2">
+          <TouchableOpacity className="ml-auto p-2 rounded-full">
             <EvilIcons
               name="close"
               size={20}
