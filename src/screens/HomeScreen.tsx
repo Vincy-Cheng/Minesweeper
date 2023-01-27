@@ -36,18 +36,39 @@ const HomeScreen = ({}: HomeProps) => {
 
       <View className="flex flex-col space-y-4 pt-6">
         {board.length > 0 && !isGameOver ? (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Game');
-              dispatch(isTimeRunning(true));
-            }}
-            className="bg-neutral-300 rounded-full p-2"
-          >
-            <CustomText
-              content={'Back to Game'}
-              styleClass="text-center text-lg"
-            ></CustomText>
-          </TouchableOpacity>
+          <View className="space-y-4">
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Game');
+                dispatch(isTimeRunning(true));
+              }}
+              className="bg-neutral-300 rounded-full p-2"
+            >
+              <CustomText
+                content={'Back to Game'}
+                styleClass="text-center text-lg"
+              ></CustomText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(
+                  initBoard({
+                    width: BOARD_SIZE,
+                    height: BOARD_SIZE,
+                    bombs: BOMBS_NUM
+                  })
+                );
+                navigation.navigate('Game');
+              }}
+              className="bg-neutral-300 rounded-full p-2"
+            >
+              <CustomText
+                content={'Start New Game'}
+                styleClass="text-center text-lg"
+              ></CustomText>
+            </TouchableOpacity>
+          </View>
         ) : (
           <TouchableOpacity
             onPress={() => {

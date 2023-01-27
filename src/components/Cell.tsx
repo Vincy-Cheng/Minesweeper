@@ -26,7 +26,7 @@ const Cell = ({
   const textColor = (bombNumber: number) => {
     switch (bombNumber) {
       case 1:
-        return 'text-blue-700';
+        return 'text-blue-500';
       case 2:
         return 'text-green-400';
       case 3:
@@ -34,11 +34,11 @@ const Cell = ({
       case 4:
         return 'text-purple-400';
       case 5:
-        return 'text-sky-400';
+        return 'text-sky-300';
       case 6:
         return 'text-orange-500';
       case 7:
-        return 'text-brown-700';
+        return 'text-pink-900';
       case 8:
         return 'text-black';
       default:

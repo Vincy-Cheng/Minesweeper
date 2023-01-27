@@ -10,6 +10,7 @@ import useTimerCounter from '../hooks/useTimerCounter';
 import { useColorScheme } from 'nativewind';
 
 import CustomModal from '../components/CustomModal';
+import CustomText from '../components/CustomText';
 
 type Props = {};
 
@@ -31,6 +32,7 @@ const GameScreen = (props: Props) => {
       }
     }
   }, [isTimerRunning, isGameOver]);
+
   return (
     <View className="bg-white dark:bg-zinc-600 ">
       <CustomModal />
