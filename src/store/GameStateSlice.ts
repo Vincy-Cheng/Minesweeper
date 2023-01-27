@@ -81,11 +81,14 @@ const GameStateSlice = createSlice({
         // Flip the cells by Flagged cells
         // Find the cells that need to be flipped
         const flipCell = flipFlaggedCell(row, col, state.board);
+
         // Loop those to flip
         for (const flip of flipCell) {
           const [flipRow, flipCol] = flip;
           state.board[flipRow][flipCol].isFlipped = true;
-          state.board = expand(flipRow, flipCol, state.board);
+          if (state.board[flipRow][flipCol].value === 0) {
+            state.board = expand(flipRow, flipCol, state.board);
+          }
           // Check if it is a bomb
           if (state.board[flipRow][flipCol].isBomb) {
             state.isGameOver = true;
