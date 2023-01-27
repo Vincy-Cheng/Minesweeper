@@ -21,11 +21,7 @@ const GameScreen = (props: Props) => {
   );
   const dispatch = useAppDispatch();
   const { startTimer, stopTimer } = useTimerCounter();
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerShown: false
-  //   });
-  // }, []);
+
   useEffect(() => {
     if (isGameOver) {
       stopTimer();

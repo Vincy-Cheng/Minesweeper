@@ -8,3 +8,4 @@ export * from './getNeighbors';
 export * from './increaseNums';
 export * from './insertBombs';
 export * from './warnFlagCell';
+export * from './flaggedCell';

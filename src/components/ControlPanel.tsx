@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -7,6 +7,7 @@ import { BOARD_SIZE, BOMBS_NUM, GameMode } from '../enum';
 import { changeGameMode, initBoard } from '../store/GameStateSlice';
 import Timer from './Timer';
 import { useColorScheme } from 'nativewind';
+import BombCounter from './BombCounter';
 
 type Props = {};
 
@@ -16,9 +17,12 @@ const ControlPanel = (props: Props) => {
   const dispatch = useAppDispatch();
   return (
     <View className="flex-row items-center space-x-4 p-2 z-50">
+      <BombCounter />
+      <Text className="dark:text-white">|</Text>
       <View>
         <Timer />
       </View>
+
       <TouchableOpacity
         onPress={() => {
           dispatch(

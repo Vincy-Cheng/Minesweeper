@@ -23,6 +23,29 @@ const Cell = ({
   const dispatch = useAppDispatch();
   const { colorScheme } = useColorScheme();
 
+  const textColor = (bombNumber: number) => {
+    switch (bombNumber) {
+      case 1:
+        return 'text-blue-700';
+      case 2:
+        return 'text-green-400';
+      case 3:
+        return 'text-red-400';
+      case 4:
+        return 'text-purple-400';
+      case 5:
+        return 'text-sky-400';
+      case 6:
+        return 'text-orange-500';
+      case 7:
+        return 'text-brown-700';
+      case 8:
+        return 'text-black';
+      default:
+        return 'dark:text-white';
+    }
+  };
+
   return (
     <Pressable
       disabled={isGameOver}
@@ -47,8 +70,8 @@ const Cell = ({
         <Fontisto name="flag" color="#ef4444" size={20} />
       ) : isFlipped ? (
         <CustomText
-          content={isBomb ? '💣' : value}
-          styleClass="dark:text-white"
+          content={isBomb ? '💥' : value}
+          styleClass={textColor(value)}
         />
       ) : mode === GameMode.FLAG ? (
         <Fontisto
