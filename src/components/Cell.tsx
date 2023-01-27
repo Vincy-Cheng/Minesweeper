@@ -10,6 +10,10 @@ import { endGame, flagCell, handleCell } from '../store/GameStateSlice';
 import CustomText from './CustomText';
 import { useColorScheme } from 'nativewind';
 
+interface CellProp extends ICell {
+  panEnabled: boolean;
+}
+
 const Cell = ({
   row,
   col,
