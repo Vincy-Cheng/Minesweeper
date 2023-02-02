@@ -41,17 +41,33 @@ const Board = (props: Props) => {
     })
   ).current;
 
-  const onPanEvent = Animated.event(
-    [
-      {
-        nativeEvent: {
-          translationX: pan.x,
-          translationY: pan.y
-        }
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        pan.setOffset({
+          x: pan.x._value,
+          y: pan.y._value
+        });
+      },
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+        useNativeDriver: false
+      }),
+      onPanResponderRelease: () => {
+        pan.flattenOffset();
+        dispatch(
+          handlePan({
+            scale: scaleNumber,
+            pan: { x: pan.x._value, y: pan.y._value }
+          })
+        );
+        console.log(pan, 'leave');
+      },
+      onPanResponderEnd: () => {
+        console.log(pan, 'end');
       }
-    ],
-    { useNativeDriver: false }
-  );
+    })
+  ).current;
 
   const onPinchEvent = Animated.event(
     [
@@ -94,35 +110,20 @@ const Board = (props: Props) => {
     }
   };
 
-  const handlePanStateChange = ({
-    nativeEvent
-  }: HandlerStateChangeEvent<PanGestureHandlerEventPayload>) => {
-    if (nativeEvent.state === State.END) {
-      dispatch(
-        handlePan({
-          scale: scaleNumber,
-          pan: { x: nativeEvent.translationX, y: nativeEvent.translationY }
-        })
-      );
-    }
-  };
-
   return (
     <View>
       <PanGestureHandler
-        onGestureEvent={onPanEvent}
         ref={panRef}
         simultaneousHandlers={[pinchRef]}
         enabled={panEnabled}
         failOffsetX={[-1000, 1000]}
         shouldCancelWhenOutside
-        onHandlerStateChange={handlePanStateChange}
       >
         <Animated.View
-        // style={{
-        //   transform: [{ translateX: pan.x }, { translateY: pan.y }]
-        // }}
-        // {...panResponder.panHandlers}
+          style={{
+            transform: [{ translateX: pan.x }, { translateY: pan.y }]
+          }}
+          {...panResponder.panHandlers}
         >
           <PinchGestureHandler
             ref={pinchRef}

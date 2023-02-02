@@ -90,7 +90,12 @@ const HomeScreen = ({}: HomeProps) => {
           </TouchableOpacity>
         )}
 
-        <TouchableOpacity className="bg-neutral-300 rounded-full p-2">
+        <TouchableOpacity
+          className="bg-neutral-300 rounded-full p-2"
+          onPress={() => {
+            navigation.navigate('Record');
+          }}
+        >
           <CustomText
             content={'Record'}
             styleClass="text-center text-lg"
