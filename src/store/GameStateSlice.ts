@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Animated } from 'react-native';
 import { BOMBS_NUM, GameMode } from '../enum';
 import useTimerCounter from '../hooks/useTimerCounter';
 import { ICell } from '../types';
@@ -17,6 +18,8 @@ interface GameState {
   gameTime: number;
   isTimerRunning: boolean;
   statusMessage: string;
+  scaleNumber: number;
+  panNumber: { x: number; y: number };
 }
 
 const initialState: GameState = {
@@ -25,7 +28,9 @@ const initialState: GameState = {
   mode: GameMode.SHOVEL,
   gameTime: 0,
   isTimerRunning: false,
-  statusMessage: ''
+  statusMessage: '',
+  scaleNumber: 1,
+  panNumber: { x: 0, y: 0 }
 };
 
 const GameStateSlice = createSlice({
@@ -137,6 +142,14 @@ const GameStateSlice = createSlice({
     },
     closeReminder: (state) => {
       state.statusMessage = '';
+    },
+    handlePan: (
+      state,
+      action: PayloadAction<{ scale: number; pan: { x: number; y: number } }>
+    ) => {
+      state.scaleNumber = action.payload.scale;
+      state.panNumber.x = action.payload.pan.x;
+      state.panNumber.y = action.payload.pan.y;
     }
   }
 });
@@ -149,7 +162,8 @@ export const {
   isTimeRunning,
   changeGameMode,
   endGame,
-  closeReminder
+  closeReminder,
+  handlePan
 } = GameStateSlice.actions;
 
 export default GameStateSlice.reducer;

@@ -8,47 +8,50 @@ import React, {
 } from 'react';
 
 import Cell from './Cell';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 
 import {
   HandlerStateChangeEvent,
   PanGestureHandler,
+  PanGestureHandlerEventPayload,
   PinchGestureHandler,
   PinchGestureHandlerEventPayload,
   State
 } from 'react-native-gesture-handler';
+import { handlePan } from '../store/GameStateSlice';
 
 type Props = {};
 
 const Board = (props: Props) => {
-  const { board } = useAppSelector((state) => state.gameState);
-  const scale = useRef(new Animated.Value(1)).current;
-  const translateX = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(0)).current;
+  const dispatch = useAppDispatch();
+  const { board, scaleNumber, panNumber } = useAppSelector(
+    (state) => state.gameState
+  );
+
+  const scale = useRef(new Animated.Value(scaleNumber || 1)).current;
 
   const pinchRef = createRef();
   const panRef = createRef();
 
   const [panEnabled, setPanEnabled] = useState<boolean>(true);
-  const pan = useRef<any>(new Animated.ValueXY()).current;
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        pan.setOffset({
-          x: pan.x._value,
-          y: pan.y._value
-        });
-      },
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
-        useNativeDriver: false
-      }),
-      onPanResponderRelease: () => {
-        pan.flattenOffset();
-      }
+  const pan = useRef<any>(
+    new Animated.ValueXY({
+      x: typeof panNumber.x === 'number' ? panNumber.x : 0,
+      y: typeof panNumber.y === 'number' ? panNumber.y : 0
     })
   ).current;
+
+  const onPanEvent = Animated.event(
+    [
+      {
+        nativeEvent: {
+          translationX: pan.x,
+          translationY: pan.y
+        }
+      }
+    ],
+    { useNativeDriver: false }
+  );
 
   const onPinchEvent = Animated.event(
     [
@@ -58,18 +61,6 @@ const Board = (props: Props) => {
     ],
     { useNativeDriver: true }
   );
-
-  // const onPanEvent = Animated.event(
-  //   [
-  //     {
-  //       // nativeEvent: {
-  //       //   translationX: translateX,
-  //       //   translationY: translateY
-  //       // }
-  //     }
-  //   ],
-  //   { useNativeDriver: false }
-  // );
 
   const handlePinchStateChange = ({
     nativeEvent
@@ -87,35 +78,51 @@ const Board = (props: Props) => {
           toValue: 1,
           useNativeDriver: true
         }).start();
-        Animated.spring(translateX, {
-          toValue: 0,
+        Animated.spring(pan.x, {
+          toValue: panNumber.x,
           useNativeDriver: true
         }).start();
-        Animated.spring(translateY, {
-          toValue: 0,
+        Animated.spring(pan.y, {
+          toValue: panNumber.y,
           useNativeDriver: true
         }).start();
-
+        dispatch(handlePan({ scale: 1, pan: panNumber }));
         setPanEnabled(true);
+      } else {
+        dispatch(handlePan({ scale: nScale, pan: panNumber }));
       }
+    }
+  };
+
+  const handlePanStateChange = ({
+    nativeEvent
+  }: HandlerStateChangeEvent<PanGestureHandlerEventPayload>) => {
+    if (nativeEvent.state === State.END) {
+      dispatch(
+        handlePan({
+          scale: scaleNumber,
+          pan: { x: nativeEvent.translationX, y: nativeEvent.translationY }
+        })
+      );
     }
   };
 
   return (
     <View>
       <PanGestureHandler
-        // onGestureEvent={onPanEvent}
+        onGestureEvent={onPanEvent}
         ref={panRef}
         simultaneousHandlers={[pinchRef]}
         enabled={panEnabled}
         failOffsetX={[-1000, 1000]}
         shouldCancelWhenOutside
+        onHandlerStateChange={handlePanStateChange}
       >
         <Animated.View
-          style={{
-            transform: [{ translateX: pan.x }, { translateY: pan.y }]
-          }}
-          {...panResponder.panHandlers}
+        // style={{
+        //   transform: [{ translateX: pan.x }, { translateY: pan.y }]
+        // }}
+        // {...panResponder.panHandlers}
         >
           <PinchGestureHandler
             ref={pinchRef}
@@ -125,7 +132,11 @@ const Board = (props: Props) => {
           >
             <Animated.View
               style={{
-                transform: [{ scale }, { translateX }, { translateY }]
+                transform: [
+                  { scale },
+                  { translateX: pan.x },
+                  { translateY: pan.y }
+                ]
               }}
             >
               <View className="h-full justify-center items-center">
@@ -142,45 +153,6 @@ const Board = (props: Props) => {
         </Animated.View>
       </PanGestureHandler>
     </View>
-    // <>
-    //   <PanGestureHandler
-    //     onGestureEvent={onPanGestureEvent}
-    //     onHandlerStateChange={handlePinchStateChange}
-    //   >
-    //     <Animated.View
-    //       style={{
-    //         transform: [
-    //           { translateX: translateX },
-    //           { translateY: translateY },
-    //           { perspective: 1 },
-    //           { scale: scale }
-    //         ]
-    //       }}
-    //       // {...panResponder.panHandlers}
-
-    //       // resizeMode="contain"
-    //     >
-    //       <View
-    //         className="h-full justify-center items-center"
-    //         // onResponderMove={(event) => {
-    //         //   console.log(event.nativeEvent);
-    //         // }}
-    //       >
-    //         {board.map((row, rowIndex) => (
-    //           <View key={rowIndex} className="flex flex-row">
-    //             {row.map((cell, cellIndex) => (
-    //               <Cell
-    //                 {...cell}
-    //                 key={'cell-' + cellIndex}
-    //                 panEnabled={false}
-    //               ></Cell>
-    //             ))}
-    //           </View>
-    //         ))}
-    //       </View>
-    //     </Animated.View>
-    //   </PanGestureHandler>
-    // </>
   );
 };
 
