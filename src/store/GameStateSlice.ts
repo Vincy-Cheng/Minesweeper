@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Animated } from 'react-native';
 import { BOMBS_NUM, GameMode } from '../enum';
-import useTimerCounter from '../hooks/useTimerCounter';
 import { ICell } from '../types';
 import {
   createBoard,
@@ -12,6 +10,8 @@ import {
 } from '../utils';
 
 interface GameState {
+  boardSize: { width: number; height: number };
+  bombs: number;
   board: ICell[][];
   isGameOver: boolean;
   mode: GameMode;
@@ -23,6 +23,8 @@ interface GameState {
 }
 
 const initialState: GameState = {
+  boardSize: { width: 10, height: 10 },
+  bombs: 10,
   board: [],
   isGameOver: false,
   mode: GameMode.SHOVEL,
@@ -74,7 +76,10 @@ const GameStateSlice = createSlice({
         }
       }
       // Check Game Status
-      if (!state.isGameOver && gameStatus(state.board, BOMBS_NUM, state.mode)) {
+      if (
+        !state.isGameOver &&
+        gameStatus(state.board, state.bombs || BOMBS_NUM, state.mode)
+      ) {
         state.statusMessage = 'You found all the bombs!';
         state.isGameOver = true;
       }
@@ -118,7 +123,7 @@ const GameStateSlice = createSlice({
       }
 
       // Check Game Status
-      if (gameStatus(state.board, BOMBS_NUM, state.mode)) {
+      if (gameStatus(state.board, state.bombs || BOMBS_NUM, state.mode)) {
         state.statusMessage = 'You found all the bombs!';
         state.isGameOver = true;
       }

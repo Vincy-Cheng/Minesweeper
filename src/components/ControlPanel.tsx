@@ -14,6 +14,7 @@ type Props = {};
 const ControlPanel = (props: Props) => {
   const mode = useAppSelector((state) => state.gameState.mode);
   const { colorScheme } = useColorScheme();
+  const { boardSize, bombs } = useAppSelector((state) => state.gameState);
   const dispatch = useAppDispatch();
   return (
     <View className="flex-row items-center space-x-4 p-2 z-50">
@@ -27,9 +28,9 @@ const ControlPanel = (props: Props) => {
         onPress={() => {
           dispatch(
             initBoard({
-              width: BOARD_SIZE,
-              height: BOARD_SIZE,
-              bombs: BOMBS_NUM
+              width: boardSize?.width || BOARD_SIZE,
+              height: boardSize?.height || BOARD_SIZE,
+              bombs: bombs || BOMBS_NUM
             })
           );
         }}

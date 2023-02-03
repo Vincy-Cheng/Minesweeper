@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ColorScheme } from '../enum';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { useAppDispatch } from '../hooks';
 import { toggle } from '../store/ColorSchemeSlice';
 type Props = {};
 

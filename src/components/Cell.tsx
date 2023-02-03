@@ -3,16 +3,12 @@ import React from 'react';
 import clsx from 'clsx';
 import { ICell } from '../types';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { BOMBS_NUM, GameMode } from '../enum';
+import { GameMode } from '../enum';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { endGame, flagCell, handleCell } from '../store/GameStateSlice';
+import { flagCell, handleCell } from '../store/GameStateSlice';
 import CustomText from './CustomText';
 import { useColorScheme } from 'nativewind';
-
-interface CellProp extends ICell {
-  panEnabled: boolean;
-}
 
 const Cell = ({
   row,

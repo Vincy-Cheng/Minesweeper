@@ -1,5 +1,5 @@
 import { TouchableOpacity, View } from 'react-native';
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../components/CustomText';
@@ -8,30 +8,27 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { BOARD_SIZE, BOMBS_NUM } from '../enum';
 import { isTimeRunning, initBoard } from '../store/GameStateSlice';
 import DarkModeSwitch from '../components/DarkModeSwitch';
+import SettingButton from '../components/SettingButton';
 
 type HomeProps = {};
 
 const HomeScreen = ({}: HomeProps) => {
   const navigation = useNavigation<NavigationScreenProp>();
   const { board, isGameOver } = useAppSelector((state) => state.gameState);
-  const { mode } = useAppSelector((state) => state.colorScheme);
+  const { boardSize, bombs } = useAppSelector((state) => state.setting);
   const dispatch = useAppDispatch();
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    });
-  }, []);
 
   return (
     <SafeAreaView className="h-full items-center dark:bg-zinc-800 ">
-      <View className="flex flex-row items-center px-2">
+      <View className="w-full flex flex-row items-center px-2 justify-between">
+        <DarkModeSwitch />
+
         <CustomText
           content="Minesweeper"
           styleClass="text-3xl text-center dark:text-white"
-          viewStyle="flex-1"
         />
 
-        <DarkModeSwitch></DarkModeSwitch>
+        <SettingButton />
       </View>
 
       <View className="flex flex-col space-y-4 pt-6">
@@ -47,16 +44,16 @@ const HomeScreen = ({}: HomeProps) => {
               <CustomText
                 content={'Back to Game'}
                 styleClass="text-center text-lg"
-              ></CustomText>
+              />
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => {
                 dispatch(
                   initBoard({
-                    width: BOARD_SIZE,
-                    height: BOARD_SIZE,
-                    bombs: BOMBS_NUM
+                    width: boardSize?.width || BOARD_SIZE,
+                    height: boardSize?.height || BOARD_SIZE,
+                    bombs: bombs || BOMBS_NUM
                   })
                 );
                 navigation.navigate('Game');
@@ -66,7 +63,7 @@ const HomeScreen = ({}: HomeProps) => {
               <CustomText
                 content={'Start New Game'}
                 styleClass="text-center text-lg"
-              ></CustomText>
+              />
             </TouchableOpacity>
           </View>
         ) : (
@@ -74,19 +71,16 @@ const HomeScreen = ({}: HomeProps) => {
             onPress={() => {
               dispatch(
                 initBoard({
-                  width: BOARD_SIZE,
-                  height: BOARD_SIZE,
-                  bombs: BOMBS_NUM
+                  width: boardSize?.width || BOARD_SIZE,
+                  height: boardSize?.height || BOARD_SIZE,
+                  bombs: bombs || BOMBS_NUM
                 })
               );
               navigation.navigate('Game');
             }}
             className="bg-neutral-300 rounded-full p-2"
           >
-            <CustomText
-              content={'New Game'}
-              styleClass="text-center text-lg"
-            ></CustomText>
+            <CustomText content={'New Game'} styleClass="text-center text-lg" />
           </TouchableOpacity>
         )}
 
@@ -96,10 +90,7 @@ const HomeScreen = ({}: HomeProps) => {
             navigation.navigate('Record');
           }}
         >
-          <CustomText
-            content={'Record'}
-            styleClass="text-center text-lg"
-          ></CustomText>
+          <CustomText content={'Record'} styleClass="text-center text-lg" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

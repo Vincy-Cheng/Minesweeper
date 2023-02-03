@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useEffect, useLayoutEffect } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import ControlPanel from '../components/ControlPanel';
 import Board from '../components/Board';
@@ -10,7 +10,6 @@ import useTimerCounter from '../hooks/useTimerCounter';
 import { useColorScheme } from 'nativewind';
 
 import CustomModal from '../components/CustomModal';
-import CustomText from '../components/CustomText';
 
 type Props = {};
 
