@@ -3,7 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { ICell } from '../types';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { GameMode } from '../enum';
+import { FontStyle, GameMode } from '../enum';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { flagCell, handleCell } from '../store/GameStateSlice';
@@ -72,6 +72,7 @@ const Cell = ({
         <CustomText
           content={isBomb ? '💥' : value}
           styleClass={textColor(value)}
+          fontStyle={FontStyle.IBM_Plex_Mono}
         />
       ) : mode === GameMode.FLAG ? (
         <Fontisto

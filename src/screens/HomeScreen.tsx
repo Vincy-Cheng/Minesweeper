@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../components/CustomText';
 import { NavigationScreenProp } from './props';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { BOARD_SIZE, BOMBS_NUM } from '../enum';
+import { BOARD_SIZE, BOMBS_NUM, FontStyle } from '../enum';
 import { isTimeRunning, initBoard } from '../store/GameStateSlice';
 import DarkModeSwitch from '../components/DarkModeSwitch';
 import SettingButton from '../components/SettingButton';
@@ -26,6 +26,7 @@ const HomeScreen = ({}: HomeProps) => {
         <CustomText
           content="Minesweeper"
           styleClass="text-3xl text-center dark:text-white"
+          fontStyle={FontStyle.IBM_Plex_Mono}
         />
 
         <SettingButton />
@@ -44,6 +45,7 @@ const HomeScreen = ({}: HomeProps) => {
               <CustomText
                 content={'Back to Game'}
                 styleClass="text-center text-lg"
+                fontStyle={FontStyle.IBM_Plex_Mono}
               />
             </TouchableOpacity>
 
@@ -63,6 +65,7 @@ const HomeScreen = ({}: HomeProps) => {
               <CustomText
                 content={'Start New Game'}
                 styleClass="text-center text-lg"
+                fontStyle={FontStyle.IBM_Plex_Mono}
               />
             </TouchableOpacity>
           </View>
@@ -80,7 +83,11 @@ const HomeScreen = ({}: HomeProps) => {
             }}
             className="bg-neutral-300 rounded-full p-2"
           >
-            <CustomText content={'New Game'} styleClass="text-center text-lg" />
+            <CustomText
+              content={'New Game'}
+              styleClass="text-center text-lg"
+              fontStyle={FontStyle.IBM_Plex_Mono}
+            />
           </TouchableOpacity>
         )}
 
@@ -90,7 +97,11 @@ const HomeScreen = ({}: HomeProps) => {
             navigation.navigate('Record');
           }}
         >
-          <CustomText content={'Record'} styleClass="text-center text-lg" />
+          <CustomText
+            content={'Record'}
+            styleClass="text-center text-lg"
+            fontStyle={FontStyle.IBM_Plex_Mono}
+          />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

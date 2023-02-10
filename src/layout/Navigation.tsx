@@ -8,6 +8,7 @@ import { RootStackParamList } from '../screens/props';
 import RecordScreen from '../screens/RecordScreen';
 import { useAppSelector } from '../hooks';
 import { useColorScheme } from 'nativewind';
+import SettingScreen from '../screens/SettingScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,6 +37,11 @@ const Navigation = () => {
         <Stack.Screen
           name="Record"
           component={RecordScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Setting"
+          component={SettingScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

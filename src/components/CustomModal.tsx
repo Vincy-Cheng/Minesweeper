@@ -5,6 +5,7 @@ import { closeReminder } from '../store/GameStateSlice';
 import CustomText from './CustomText';
 import { useColorScheme } from 'nativewind';
 import { useAppSelector, useAppDispatch } from '../hooks';
+import { FontStyle } from '../enum';
 
 type Props = {};
 
@@ -38,15 +39,17 @@ const CustomModal = (props: Props) => {
               color={colorScheme === 'dark' ? '#ffffff' : '#000000'}
             />
           </TouchableOpacity>
-          <View className="px-3 space-y-2 ">
+          <View className="px-3 space-y-2 modal-body">
             <CustomText
               styleClass="text-center text-xl dark:text-white"
               content={statusMessage ?? ''}
+              fontStyle={FontStyle.IBM_Plex_Mono}
             />
 
             <CustomText
               content={'Close the modal and start a new Game!'}
               styleClass="text-center pb-4 text-neutral-600 dark:text-white"
+              fontStyle={FontStyle.IBM_Plex_Mono}
             />
           </View>
         </View>

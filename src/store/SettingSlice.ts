@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface SettingState {
   bombs: number;
@@ -13,9 +13,17 @@ const initialState: SettingState = {
 const SettingSlice = createSlice({
   name: 'setting',
   initialState,
-  reducers: {}
+  reducers: {
+    updateSize: (
+      state,
+      action: PayloadAction<{ width: number; height: number }>
+    ) => {
+      state.boardSize.width = action.payload.width;
+      state.boardSize.height = action.payload.height;
+    }
+  }
 });
 
-export const {} = SettingSlice.actions;
+export const { updateSize } = SettingSlice.actions;
 
 export default SettingSlice.reducer;
