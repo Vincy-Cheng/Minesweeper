@@ -50,89 +50,8 @@ const Board = (props: Props) => {
   const { board, scaleNumber, panNumber, boardSize } = useAppSelector(
     (state) => state.gameState
   );
-  // const minMaxY = (boardSize.height * 36) / 4;
-  // const minMaxX = (boardSize.width * 36) / 4;
 
   const scale = useRef(new Animated.Value(scaleNumber || 1)).current;
-
-  // const pinchRef = createRef();
-  // const panRef = createRef();
-
-  const [panEnabled, setPanEnabled] = useState<boolean>(true);
-  // const pan = useRef<any>(
-  //   new Animated.ValueXY({
-  //     x: typeof panNumber.x === 'number' ? panNumber.x : 0,
-  //     y: typeof panNumber.y === 'number' ? panNumber.y : 0
-  //   })
-  // ).current;
-
-  // const panResponder = useRef(
-  //   PanResponder.create({
-  //     onMoveShouldSetPanResponder: () => true,
-  //     onPanResponderGrant: () => {
-  //       pan.setOffset({
-  //         x:
-  //           pan.x._value > minMaxX
-  //             ? minMaxX
-  //             : pan.x._value < -minMaxX
-  //             ? -minMaxX
-  //             : pan.x._value,
-  //         y:
-  //           pan.y._value > minMaxY
-  //             ? minMaxY
-  //             : pan.y._value < -minMaxY
-  //             ? -minMaxY
-  //             : pan.y._value
-  //       });
-  //     },
-
-  //     onPanResponderMove: (event, gesture) => {
-  //       console.log(event.nativeEvent, gesture);
-  //       if (
-  //         event.nativeEvent.locationX < minMaxX &&
-  //         event.nativeEvent.locationX > -minMaxX &&
-  //         event.nativeEvent.locationY < minMaxY &&
-  //         event.nativeEvent.locationY > -minMaxY
-  //       ) {
-  //         pan.setValue({ x: gesture.dx, y: gesture.dy });
-  //       }
-  //     },
-
-  //     onPanResponderRelease: (event) => {
-  //       pan.flattenOffset();
-  //       console.log(pan, 'pan');
-  //       dispatch(
-  //         handlePan({
-  //           scale: scaleNumber,
-  //           pan: {
-  //             x:
-  //               pan.x._value > minMaxX
-  //                 ? minMaxX
-  //                 : pan.x._value < -minMaxX
-  //                 ? -minMaxX
-  //                 : pan.x._value,
-  //             y:
-  //               pan.y._value > minMaxY
-  //                 ? minMaxY
-  //                 : pan.y._value < -minMaxY
-  //                 ? -minMaxY
-  //                 : pan.y._value
-  //           }
-  //         })
-  //       );
-  //     }
-  //   })
-  // ).current;
-  // console.log(panNumber);
-
-  // useEffect(() => {
-  //   dispatch(
-  //     handlePan({
-  //       scale: scaleNumber,
-  //       pan: { x: 0, y: 0 }
-  //     })
-  //   );
-  // }, []);
 
   const maxWidth = boardSize.width * 36;
   const maxHeight = boardSize.height * 36;
@@ -191,9 +110,9 @@ const Board = (props: Props) => {
     nativeEvent
   }: HandlerStateChangeEvent<PinchGestureHandlerEventPayload>) => {
     // disable pan when pinch-zoom
-    if (nativeEvent.state === State.ACTIVE) {
-      setPanEnabled(false);
-    }
+    // if (nativeEvent.state === State.ACTIVE) {
+    //   setPanEnabled(false);
+    // }
 
     // when scale < 1, reset scale back to original (1)
     const nScale = nativeEvent.scale;
@@ -212,7 +131,7 @@ const Board = (props: Props) => {
           useNativeDriver: true
         }).start();
         dispatch(handlePan({ scale: 1, pan: panNumber }));
-        setPanEnabled(true);
+        // setPanEnabled(true);
       } else if (nScale > 3) {
         Animated.spring(scale, {
           toValue: 3,
@@ -227,13 +146,13 @@ const Board = (props: Props) => {
           useNativeDriver: true
         }).start();
         dispatch(handlePan({ scale: 3, pan: panNumber }));
-        setPanEnabled(true);
+        // setPanEnabled(true);
       } else {
         dispatch(handlePan({ scale: nScale, pan: panNumber }));
       }
     }
   };
-  console.log(pan, scaleNumber, maxHeight, maxWidth);
+
   return (
     <View>
       <Animated.View
