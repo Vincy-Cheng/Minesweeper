@@ -7,7 +7,7 @@ interface SettingState {
 
 const initialState: SettingState = {
   bombs: 10,
-  boardSize: { width: 100, height: 100 }
+  boardSize: { width: 10, height: 10 }
 };
 
 const SettingSlice = createSlice({
@@ -20,10 +20,13 @@ const SettingSlice = createSlice({
     ) => {
       state.boardSize.width = action.payload.width;
       state.boardSize.height = action.payload.height;
+    },
+    updateBombs: (state, action: PayloadAction<number>) => {
+      state.bombs = action.payload;
     }
   }
 });
 
-export const { updateSize } = SettingSlice.actions;
+export const { updateSize, updateBombs } = SettingSlice.actions;
 
 export default SettingSlice.reducer;

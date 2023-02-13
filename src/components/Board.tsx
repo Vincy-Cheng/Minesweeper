@@ -1,4 +1,11 @@
-import { Animated, ScrollView, View, PanResponder } from 'react-native';
+import {
+  ScrollView,
+  View,
+  PanResponder,
+  Dimensions,
+  Animated,
+  StyleSheet
+} from 'react-native';
 import React, {
   createRef,
   useEffect,
@@ -11,29 +18,124 @@ import Cell from './Cell';
 import { useAppDispatch, useAppSelector } from '../hooks';
 
 import {
+  Gesture,
+  GestureDetector,
+  GestureEvent,
   HandlerStateChangeEvent,
   PanGestureHandler,
   PanGestureHandlerEventPayload,
+  PanGestureHandlerGestureEvent,
   PinchGestureHandler,
   PinchGestureHandlerEventPayload,
   State
 } from 'react-native-gesture-handler';
+// import Animated, {
+//   useAnimatedGestureHandler,
+//   useAnimatedStyle,
+//   useSharedValue
+// } from 'react-native-reanimated';
 import { handlePan } from '../store/GameStateSlice';
+import CustomText from './CustomText';
+import { FontStyle } from '../enum';
+import {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle
+} from 'react-native-reanimated';
 
 type Props = {};
 
 const Board = (props: Props) => {
   const dispatch = useAppDispatch();
-  const { board, scaleNumber, panNumber } = useAppSelector(
+  const { board, scaleNumber, panNumber, boardSize } = useAppSelector(
     (state) => state.gameState
   );
+  // const minMaxY = (boardSize.height * 36) / 4;
+  // const minMaxX = (boardSize.width * 36) / 4;
 
   const scale = useRef(new Animated.Value(scaleNumber || 1)).current;
 
-  const pinchRef = createRef();
-  const panRef = createRef();
+  // const pinchRef = createRef();
+  // const panRef = createRef();
 
   const [panEnabled, setPanEnabled] = useState<boolean>(true);
+  // const pan = useRef<any>(
+  //   new Animated.ValueXY({
+  //     x: typeof panNumber.x === 'number' ? panNumber.x : 0,
+  //     y: typeof panNumber.y === 'number' ? panNumber.y : 0
+  //   })
+  // ).current;
+
+  // const panResponder = useRef(
+  //   PanResponder.create({
+  //     onMoveShouldSetPanResponder: () => true,
+  //     onPanResponderGrant: () => {
+  //       pan.setOffset({
+  //         x:
+  //           pan.x._value > minMaxX
+  //             ? minMaxX
+  //             : pan.x._value < -minMaxX
+  //             ? -minMaxX
+  //             : pan.x._value,
+  //         y:
+  //           pan.y._value > minMaxY
+  //             ? minMaxY
+  //             : pan.y._value < -minMaxY
+  //             ? -minMaxY
+  //             : pan.y._value
+  //       });
+  //     },
+
+  //     onPanResponderMove: (event, gesture) => {
+  //       console.log(event.nativeEvent, gesture);
+  //       if (
+  //         event.nativeEvent.locationX < minMaxX &&
+  //         event.nativeEvent.locationX > -minMaxX &&
+  //         event.nativeEvent.locationY < minMaxY &&
+  //         event.nativeEvent.locationY > -minMaxY
+  //       ) {
+  //         pan.setValue({ x: gesture.dx, y: gesture.dy });
+  //       }
+  //     },
+
+  //     onPanResponderRelease: (event) => {
+  //       pan.flattenOffset();
+  //       console.log(pan, 'pan');
+  //       dispatch(
+  //         handlePan({
+  //           scale: scaleNumber,
+  //           pan: {
+  //             x:
+  //               pan.x._value > minMaxX
+  //                 ? minMaxX
+  //                 : pan.x._value < -minMaxX
+  //                 ? -minMaxX
+  //                 : pan.x._value,
+  //             y:
+  //               pan.y._value > minMaxY
+  //                 ? minMaxY
+  //                 : pan.y._value < -minMaxY
+  //                 ? -minMaxY
+  //                 : pan.y._value
+  //           }
+  //         })
+  //       );
+  //     }
+  //   })
+  // ).current;
+  // console.log(panNumber);
+
+  // useEffect(() => {
+  //   dispatch(
+  //     handlePan({
+  //       scale: scaleNumber,
+  //       pan: { x: 0, y: 0 }
+  //     })
+  //   );
+  // }, []);
+
+  const maxWidth = boardSize.width * 36;
+  const maxHeight = boardSize.height * 36;
   const pan = useRef<any>(
     new Animated.ValueXY({
       x: typeof panNumber.x === 'number' ? panNumber.x : 0,
@@ -53,18 +155,25 @@ const Board = (props: Props) => {
       onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
         useNativeDriver: false
       }),
-      onPanResponderRelease: () => {
+      onPanResponderRelease: (e, gesture) => {
         pan.flattenOffset();
-        dispatch(
-          handlePan({
-            scale: scaleNumber,
-            pan: { x: pan.x._value, y: pan.y._value }
-          })
-        );
-        console.log(pan, 'leave');
-      },
-      onPanResponderEnd: () => {
-        console.log(pan, 'end');
+        let tempXY: { x: number; y: number } = {
+          ...JSON.parse(JSON.stringify(pan))
+        };
+        if (tempXY.x > maxWidth / 4) {
+          tempXY.x = maxWidth / 4;
+        } else if (tempXY.x < -maxWidth / 4) {
+          tempXY.x = -maxWidth / 4;
+        }
+
+        if (tempXY.y > maxHeight / 4) {
+          tempXY.y = maxHeight / 4;
+        } else if (tempXY.y < -maxHeight / 4) {
+          tempXY.y = -maxHeight / 4;
+        }
+
+        pan.setValue({ ...tempXY });
+        dispatch(handlePan({ scale: scaleNumber, pan: { ...tempXY } }));
       }
     })
   ).current;
@@ -104,55 +213,60 @@ const Board = (props: Props) => {
         }).start();
         dispatch(handlePan({ scale: 1, pan: panNumber }));
         setPanEnabled(true);
+      } else if (nScale > 3) {
+        Animated.spring(scale, {
+          toValue: 3,
+          useNativeDriver: true
+        }).start();
+        Animated.spring(pan.x, {
+          toValue: panNumber.x,
+          useNativeDriver: true
+        }).start();
+        Animated.spring(pan.y, {
+          toValue: panNumber.y,
+          useNativeDriver: true
+        }).start();
+        dispatch(handlePan({ scale: 3, pan: panNumber }));
+        setPanEnabled(true);
       } else {
         dispatch(handlePan({ scale: nScale, pan: panNumber }));
       }
     }
   };
-
+  console.log(pan, scaleNumber, maxHeight, maxWidth);
   return (
     <View>
-      <PanGestureHandler
-        ref={panRef}
-        simultaneousHandlers={[pinchRef]}
-        enabled={panEnabled}
-        failOffsetX={[-1000, 1000]}
-        shouldCancelWhenOutside
+      <Animated.View
+        style={{
+          transform: [{ translateX: pan.x }, { translateY: pan.y }]
+        }}
+        {...panResponder.panHandlers}
       >
-        <Animated.View
-          style={{
-            transform: [{ translateX: pan.x }, { translateY: pan.y }]
-          }}
-          {...panResponder.panHandlers}
+        <PinchGestureHandler
+          onGestureEvent={onPinchEvent}
+          onHandlerStateChange={handlePinchStateChange}
         >
-          <PinchGestureHandler
-            ref={pinchRef}
-            onGestureEvent={onPinchEvent}
-            simultaneousHandlers={[panRef]}
-            onHandlerStateChange={handlePinchStateChange}
+          <Animated.View
+            style={{
+              transform: [
+                { scale },
+                { translateX: pan.x },
+                { translateY: pan.y }
+              ]
+            }}
           >
-            <Animated.View
-              style={{
-                transform: [
-                  { scale },
-                  { translateX: pan.x },
-                  { translateY: pan.y }
-                ]
-              }}
-            >
-              <View className="h-full justify-center items-center">
-                {board.map((row, rowIndex) => (
-                  <View key={rowIndex} className="flex flex-row">
-                    {row.map((cell, cellIndex) => (
-                      <Cell {...cell} key={'cell-' + cellIndex}></Cell>
-                    ))}
-                  </View>
-                ))}
-              </View>
-            </Animated.View>
-          </PinchGestureHandler>
-        </Animated.View>
-      </PanGestureHandler>
+            <View className="h-full justify-center items-center">
+              {board.map((row, rowIndex) => (
+                <View key={rowIndex} className="flex flex-row">
+                  {row.map((cell, cellIndex) => (
+                    <Cell {...cell} key={'cell-' + cellIndex}></Cell>
+                  ))}
+                </View>
+              ))}
+            </View>
+          </Animated.View>
+        </PinchGestureHandler>
+      </Animated.View>
     </View>
   );
 };

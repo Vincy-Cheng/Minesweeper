@@ -19,16 +19,23 @@
       "supportsTablet": true,
       "infoPlist": {
         "UIUserInterfaceStyle": "automatic"
-      }
+      },
+      "bundleIdentifier": "com.vincycheng23.minesweeper"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.vincycheng23.minesweeper"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b6537910-c5d3-4f5c-b8d3-587d9a31e00e"
+      }
     }
   }
 }

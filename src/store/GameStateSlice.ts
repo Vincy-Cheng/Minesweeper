@@ -1,13 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BOMBS_NUM, GameMode } from '../enum';
+import { GameMode } from '../enum';
 import { ICell } from '../types';
-import {
-  createBoard,
-  expand,
-  flipFlaggedCell,
-  gameStatus,
-  warnFlagCell
-} from '../utils';
+import { expand, flipFlaggedCell, gameStatus, warnFlagCell } from '../utils';
 
 interface GameState {
   boardSize: { width: number; height: number };
@@ -41,13 +35,19 @@ const GameStateSlice = createSlice({
   reducers: {
     initBoard: (
       state,
-      action: PayloadAction<{ width: number; height: number; bombs: number }>
+      action: PayloadAction<{
+        width: number;
+        height: number;
+        bombs: number;
+        board: ICell[][];
+      }>
     ) => {
-      state.board = createBoard({
+      state.board = action.payload.board;
+      state.boardSize = {
         width: action.payload.width,
-        height: action.payload.height,
-        bombs: action.payload.bombs
-      });
+        height: action.payload.height
+      };
+      state.bombs = action.payload.bombs;
       state.isGameOver = false;
       state.gameTime = 0;
       state.isTimerRunning = true;
@@ -78,7 +78,7 @@ const GameStateSlice = createSlice({
       // Check Game Status
       if (
         !state.isGameOver &&
-        gameStatus(state.board, state.bombs || BOMBS_NUM, state.mode)
+        gameStatus(state.board, state.bombs, state.mode)
       ) {
         state.statusMessage = 'You found all the bombs!';
         state.isGameOver = true;
@@ -123,7 +123,7 @@ const GameStateSlice = createSlice({
       }
 
       // Check Game Status
-      if (gameStatus(state.board, state.bombs || BOMBS_NUM, state.mode)) {
+      if (gameStatus(state.board, state.bombs, state.mode)) {
         state.statusMessage = 'You found all the bombs!';
         state.isGameOver = true;
       }
@@ -152,6 +152,17 @@ const GameStateSlice = createSlice({
       state,
       action: PayloadAction<{ scale: number; pan: { x: number; y: number } }>
     ) => {
+      // console.log(action.payload, 'pan');
+      state.scaleNumber = action.payload.scale;
+      state.panNumber.x = action.payload.pan.x;
+      state.panNumber.y = action.payload.pan.y;
+    },
+
+    handlePinch: (
+      state,
+      action: PayloadAction<{ scale: number; pan: { x: number; y: number } }>
+    ) => {
+      // console.log(action.payload, 'pan');
       state.scaleNumber = action.payload.scale;
       state.panNumber.x = action.payload.pan.x;
       state.panNumber.y = action.payload.pan.y;

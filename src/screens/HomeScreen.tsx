@@ -5,10 +5,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomText from '../components/CustomText';
 import { NavigationScreenProp } from './props';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { BOARD_SIZE, BOMBS_NUM, FontStyle } from '../enum';
+import { FontStyle } from '../enum';
 import { isTimeRunning, initBoard } from '../store/GameStateSlice';
 import DarkModeSwitch from '../components/DarkModeSwitch';
 import SettingButton from '../components/SettingButton';
+import { createBoard } from '../utils';
 
 type HomeProps = {};
 
@@ -51,11 +52,17 @@ const HomeScreen = ({}: HomeProps) => {
 
             <TouchableOpacity
               onPress={() => {
+                const newBoard = createBoard({
+                  width: boardSize?.width || 10,
+                  height: boardSize?.height || 10,
+                  bombs: bombs || 10
+                });
                 dispatch(
                   initBoard({
-                    width: boardSize?.width || BOARD_SIZE,
-                    height: boardSize?.height || BOARD_SIZE,
-                    bombs: bombs || BOMBS_NUM
+                    width: boardSize?.width || 10,
+                    height: boardSize?.height || 10,
+                    bombs: bombs || 10,
+                    board: newBoard
                   })
                 );
                 navigation.navigate('Game');
@@ -72,11 +79,17 @@ const HomeScreen = ({}: HomeProps) => {
         ) : (
           <TouchableOpacity
             onPress={() => {
+              const newBoard = createBoard({
+                width: boardSize?.width || 10,
+                height: boardSize?.height || 10,
+                bombs: bombs || 10
+              });
               dispatch(
                 initBoard({
-                  width: boardSize?.width || BOARD_SIZE,
-                  height: boardSize?.height || BOARD_SIZE,
-                  bombs: bombs || BOMBS_NUM
+                  width: boardSize?.width || 10,
+                  height: boardSize?.height || 10,
+                  bombs: bombs || 10,
+                  board: newBoard
                 })
               );
               navigation.navigate('Game');
