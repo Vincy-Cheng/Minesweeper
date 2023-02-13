@@ -10,6 +10,7 @@ import { isTimeRunning, initBoard } from '../store/GameStateSlice';
 import DarkModeSwitch from '../components/DarkModeSwitch';
 import SettingButton from '../components/SettingButton';
 import { createBoard } from '../utils';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 type HomeProps = {};
 
@@ -21,6 +22,9 @@ const HomeScreen = ({}: HomeProps) => {
 
   return (
     <SafeAreaView className="h-full items-center dark:bg-zinc-800 ">
+      <View className="absolute -left-10 -bottom-2">
+        <FontAwesome5 name="bomb" size={300} color={'#a1a1aa80'} />
+      </View>
       <View className="w-full flex flex-row items-center px-2 justify-between">
         <DarkModeSwitch />
 

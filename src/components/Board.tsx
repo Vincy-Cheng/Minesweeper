@@ -1,47 +1,17 @@
-import {
-  ScrollView,
-  View,
-  PanResponder,
-  Dimensions,
-  Animated,
-  StyleSheet
-} from 'react-native';
-import React, {
-  createRef,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState
-} from 'react';
+import { View, PanResponder, Animated } from 'react-native';
+import React, { useRef } from 'react';
 
 import Cell from './Cell';
 import { useAppDispatch, useAppSelector } from '../hooks';
 
 import {
-  Gesture,
-  GestureDetector,
-  GestureEvent,
   HandlerStateChangeEvent,
-  PanGestureHandler,
-  PanGestureHandlerEventPayload,
-  PanGestureHandlerGestureEvent,
   PinchGestureHandler,
   PinchGestureHandlerEventPayload,
   State
 } from 'react-native-gesture-handler';
-// import Animated, {
-//   useAnimatedGestureHandler,
-//   useAnimatedStyle,
-//   useSharedValue
-// } from 'react-native-reanimated';
+
 import { handlePan } from '../store/GameStateSlice';
-import CustomText from './CustomText';
-import { FontStyle } from '../enum';
-import {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle
-} from 'react-native-reanimated';
 
 type Props = {};
 

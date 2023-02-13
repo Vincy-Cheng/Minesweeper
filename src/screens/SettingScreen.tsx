@@ -52,9 +52,9 @@ const SettingScreen = (props: Props) => {
         });
       }}
     >
-      <SafeAreaView className="relative dark:bg-zinc-600 h-full px-2">
+      <SafeAreaView className="relative dark:bg-zinc-800 h-full px-2">
         <View className="absolute -left-10 -bottom-2">
-          <FontAwesome5 name="bomb" size={300} color={'#a1a1aa'} />
+          <FontAwesome5 name="bomb" size={300} color={'#a1a1aa80'} />
         </View>
 
         <View className="flex flex-row items-center">
