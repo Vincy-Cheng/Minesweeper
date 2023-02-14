@@ -7,12 +7,16 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'nativewind';
 import { FontStyle } from '../enum';
+import { useAppSelector } from '../hooks';
 
 type Props = {};
 
 const RecordScreen = (props: Props) => {
   const navigation = useNavigation();
   const { colorScheme } = useColorScheme();
+
+  const { records } = useAppSelector((state) => state.record);
+  console.log(records);
   return (
     <SafeAreaView className="bg-white dark:bg-zinc-800 h-full px-2">
       <View className="absolute -left-10 -bottom-2">
@@ -32,11 +36,73 @@ const RecordScreen = (props: Props) => {
         </TouchableOpacity>
         <View className="flex-1 pr-[30px]">
           <CustomText
-            content={'Record'}
+            content={'Records'}
             styleClass={'text-center text-xl dark:text-white'}
             fontStyle={FontStyle.IBM_Plex_Mono}
           />
         </View>
+      </View>
+      <View className="pt-4 px-10">
+        {records
+          .slice(-5)
+          .reverse()
+          .map((record, index) => (
+            <View
+              key={record.endDate}
+              className="space-y-2 py-2 border-b border-b-zinc-400"
+            >
+              <View className="flex flex-row justify-between">
+                <View>
+                  <CustomText
+                    content={'Size: '}
+                    fontStyle={FontStyle.IBM_Plex_Mono}
+                    styleClass="dark:text-white"
+                  />
+                </View>
+                <View>
+                  <CustomText
+                    content={record.size.width + ' x ' + record.size.height}
+                    fontStyle={FontStyle.IBM_Plex_Mono}
+                    styleClass="dark:text-white"
+                  />
+                </View>
+              </View>
+              <View className="flex flex-row justify-between">
+                <View>
+                  <CustomText
+                    content={'Bombs number: '}
+                    fontStyle={FontStyle.IBM_Plex_Mono}
+                    styleClass="dark:text-white"
+                  />
+                </View>
+                <View>
+                  <CustomText
+                    content={record.bombs}
+                    fontStyle={FontStyle.IBM_Plex_Mono}
+                    styleClass="dark:text-white"
+                  />
+                </View>
+              </View>
+              <View className="flex flex-row justify-between">
+                <View>
+                  <CustomText
+                    content={'Games take: '}
+                    fontStyle={FontStyle.IBM_Plex_Mono}
+                    styleClass="dark:text-white"
+                  />
+                </View>
+                <View>
+                  <CustomText
+                    content={new Date(record.time * 1000)
+                      .toISOString()
+                      .slice(11, 19)}
+                    fontStyle={FontStyle.IBM_Plex_Mono}
+                    styleClass="dark:text-white"
+                  />
+                </View>
+              </View>
+            </View>
+          ))}
       </View>
     </SafeAreaView>
   );

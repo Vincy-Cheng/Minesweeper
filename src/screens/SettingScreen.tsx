@@ -76,7 +76,7 @@ const SettingScreen = (props: Props) => {
             />
           </View>
         </View>
-        <View className="px-2 pt-6 border-b border-b-zinc-400">
+        <View className="px-2 pt-6 pb-2 border-b border-b-zinc-400">
           <CustomText
             content={'Board size:'}
             styleClass="text-xl dark:text-white"
@@ -141,7 +141,7 @@ const SettingScreen = (props: Props) => {
           </View>
         </View>
 
-        <View className="px-2 pt-6 border-b border-b-zinc-400">
+        <View className="px-2 pt-6 pb-2 border-b border-b-zinc-400">
           <CustomText
             content={'Bombs:'}
             styleClass="text-xl dark:text-white"

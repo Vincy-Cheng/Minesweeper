@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import GameStateReducer from './GameStateSlice';
 import ColorSchemeReducer from './ColorSchemeSlice';
 import SettingReducer from './SettingSlice';
-
+import RecordReducer from './RecordSlice';
 import {
   persistReducer,
   persistStore,
@@ -25,7 +25,8 @@ const persistConfig = {
 const reducer = combineReducers({
   gameState: GameStateReducer,
   colorScheme: ColorSchemeReducer,
-  setting: SettingReducer
+  setting: SettingReducer,
+  record: RecordReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

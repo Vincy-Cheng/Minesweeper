@@ -14,6 +14,7 @@ interface GameState {
   statusMessage: string;
   scaleNumber: number;
   panNumber: { x: number; y: number };
+  startTime: string;
 }
 
 const initialState: GameState = {
@@ -26,7 +27,8 @@ const initialState: GameState = {
   isTimerRunning: false,
   statusMessage: '',
   scaleNumber: 1,
-  panNumber: { x: 0, y: 0 }
+  panNumber: { x: 0, y: 0 },
+  startTime: ''
 };
 
 const GameStateSlice = createSlice({
@@ -52,6 +54,7 @@ const GameStateSlice = createSlice({
       state.gameTime = 0;
       state.isTimerRunning = true;
       state.statusMessage = '';
+      state.startTime = new Date().toISOString();
     },
     handleCell: (
       state,

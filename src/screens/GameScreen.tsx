@@ -11,18 +11,26 @@ import { useColorScheme } from 'nativewind';
 import clsx from 'clsx';
 import CustomModal from '../components/CustomModal';
 import { createBoard } from '../utils';
+import { addRecord, clearRecord } from '../store/RecordSlice';
 
 type Props = {};
 
 const GameScreen = (props: Props) => {
   const navigation = useNavigation();
   const { colorScheme } = useColorScheme();
-  const { isGameOver, isTimerRunning, boardSize, bombs } = useAppSelector(
-    (state) => state.gameState
-  );
+  const {
+    isGameOver,
+    isTimerRunning,
+    boardSize,
+    bombs,
+    gameTime,
+    statusMessage,
+    startTime
+  } = useAppSelector((state) => state.gameState);
   const { boardSize: settingSize, bombs: settingBombs } = useAppSelector(
     (state) => state.setting
   );
+  const { records } = useAppSelector((state) => state.record);
 
   const dispatch = useAppDispatch();
   const { startTimer, stopTimer } = useTimerCounter();
@@ -31,6 +39,17 @@ const GameScreen = (props: Props) => {
   useEffect(() => {
     if (isGameOver) {
       stopTimer();
+      if (statusMessage !== '💥' && !isTimerRunning) {
+        dispatch(
+          addRecord({
+            startDate: startTime,
+            endDate: new Date().toISOString(),
+            size: { ...boardSize },
+            bombs: bombs,
+            time: gameTime
+          })
+        );
+      }
     } else {
       if (isTimerRunning) {
         startTimer();
