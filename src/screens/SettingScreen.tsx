@@ -11,7 +11,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useColorScheme } from 'nativewind';
 import CustomText from '../components/CustomText';
-import BottomSheet from '../components/BottomSheet';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { updateBombs, updateSize } from '../store/SettingSlice';
 import { FontStyle } from '../enum';

@@ -8,10 +8,12 @@ import {
   HandlerStateChangeEvent,
   PinchGestureHandler,
   PinchGestureHandlerEventPayload,
-  State
+  State,
+  LongPressGestureHandler,
+  LongPressGestureHandlerEventPayload
 } from 'react-native-gesture-handler';
 
-import { handlePan } from '../store/GameStateSlice';
+import { handleCell, handlePan } from '../store/GameStateSlice';
 
 type Props = {};
 
@@ -32,6 +34,7 @@ const Board = (props: Props) => {
     })
   ).current;
 
+  // Pan Gesture
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
@@ -67,6 +70,7 @@ const Board = (props: Props) => {
     })
   ).current;
 
+  // Pinch Gesture
   const onPinchEvent = Animated.event(
     [
       {
@@ -123,6 +127,17 @@ const Board = (props: Props) => {
     }
   };
 
+  // Long Press Gesture
+  const onLongPress = (
+    event: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>,
+    rowIndex: number,
+    colIndex: number
+  ) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      dispatch(handleCell({ row: rowIndex, col: colIndex }));
+    }
+  };
+
   return (
     <View>
       <Animated.View
@@ -148,7 +163,17 @@ const Board = (props: Props) => {
               {board.map((row, rowIndex) => (
                 <View key={rowIndex} className="flex flex-row">
                   {row.map((cell, cellIndex) => (
-                    <Cell {...cell} key={'cell-' + cellIndex}></Cell>
+                    <LongPressGestureHandler
+                      onHandlerStateChange={(event) => {
+                        onLongPress(event, rowIndex, cellIndex);
+                      }}
+                      minDurationMs={500}
+                      key={'cell-' + cellIndex}
+                    >
+                      <View>
+                        <Cell {...cell} />
+                      </View>
+                    </LongPressGestureHandler>
                   ))}
                 </View>
               ))}

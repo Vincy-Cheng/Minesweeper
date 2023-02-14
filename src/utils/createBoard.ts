@@ -13,6 +13,7 @@ export function createBoard({ width, height, bombs }: CreateBoard) {
   const matrix: ICell[][] = [];
 
   // create an empty bombs array first
+
   for (let row = 0; row < height; row++) {
     const newRow = [];
 
@@ -27,5 +28,6 @@ export function createBoard({ width, height, bombs }: CreateBoard) {
   insertBombs(matrix, bombs);
   // increase numbers
   increaseNums(matrix);
+
   return matrix;
 }

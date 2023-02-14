@@ -4,21 +4,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { GameMode } from '../enum';
-import { changeGameMode, initBoard } from '../store/GameStateSlice';
+import { changeGameMode } from '../store/GameStateSlice';
 import Timer from './Timer';
 import { useColorScheme } from 'nativewind';
 import BombCounter from './BombCounter';
-import { createBoard } from '../utils';
 
-type Props = {};
+type ControlPanelProps = {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const ControlPanel = (props: Props) => {
+const ControlPanel = ({ setLoading }: ControlPanelProps) => {
   const mode = useAppSelector((state) => state.gameState.mode);
   const { colorScheme } = useColorScheme();
-  const { boardSize, bombs } = useAppSelector((state) => state.gameState);
-  const { boardSize: settingSize, bombs: settingBombs } = useAppSelector(
-    (state) => state.setting
-  );
   const dispatch = useAppDispatch();
   return (
     <View className="flex-row items-center space-x-4 p-2 z-50">
@@ -30,19 +27,7 @@ const ControlPanel = (props: Props) => {
 
       <TouchableOpacity
         onPress={() => {
-          const newBoard = createBoard({
-            width: boardSize?.width || settingSize.width,
-            height: boardSize?.height || settingSize.height,
-            bombs: bombs || settingBombs
-          });
-          dispatch(
-            initBoard({
-              width: boardSize?.width || settingSize.width,
-              height: boardSize?.height || settingSize.height,
-              bombs: bombs || settingBombs,
-              board: newBoard
-            })
-          );
+          setLoading(true);
         }}
       >
         <MaterialCommunityIcons

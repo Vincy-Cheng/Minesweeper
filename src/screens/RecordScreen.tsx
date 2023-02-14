@@ -3,9 +3,8 @@ import React from 'react';
 import CustomText from '../components/CustomText';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
-import { isTimeRunning } from '../store/GameStateSlice';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch } from '../hooks';
 import { useColorScheme } from 'nativewind';
 import { FontStyle } from '../enum';
 
@@ -15,7 +14,10 @@ const RecordScreen = (props: Props) => {
   const navigation = useNavigation();
   const { colorScheme } = useColorScheme();
   return (
-    <SafeAreaView className="bg-white dark:bg-zinc-600 h-full px-2">
+    <SafeAreaView className="bg-white dark:bg-zinc-800 h-full px-2">
+      <View className="absolute -left-10 -bottom-2">
+        <FontAwesome5 name="bomb" size={300} color={'#a1a1aa80'} />
+      </View>
       <View className="flex flex-row items-center">
         <TouchableOpacity
           onPress={() => {

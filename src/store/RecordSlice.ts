@@ -13,3 +13,7 @@ const RecordSlice = createSlice({
 export const {} = RecordSlice.actions;
 
 export default RecordSlice.reducer;
+// Date
+// Size
+// Bombs
+// Time

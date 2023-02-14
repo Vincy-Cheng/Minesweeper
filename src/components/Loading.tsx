@@ -1,12 +1,20 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
+import CustomText from './CustomText';
+import { FontStyle } from '../enum';
 
-type Props = {};
+type LoadingProps = {
+  finishedCells: number;
+  totalCells: number;
+};
 
-const Loading = (props: Props) => {
+const Loading = ({ finishedCells, totalCells }: LoadingProps) => {
   return (
     <View>
-      <Text>Loading</Text>
+      <CustomText
+        content={(finishedCells / totalCells) * 100 + '%'}
+        fontStyle={FontStyle.IBM_Plex_Mono}
+      />
     </View>
   );
 };
