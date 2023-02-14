@@ -162,9 +162,7 @@ const Board = (props: Props) => {
     rowIndex: number,
     colIndex: number
   ) => {
-    console.log(Date.now(), 'not active');
     if (event.nativeEvent.state === State.ACTIVE) {
-      console.log(Date.now());
       dispatch(handleCell({ row: rowIndex, col: colIndex }));
     } else if (event.nativeEvent.state === State.BEGAN) {
       setGestureEnable((prev) => {

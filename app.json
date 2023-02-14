@@ -4,7 +4,7 @@
     "slug": "minesweeper",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/AppIcons/Assets.xcassets/AppIcon.appiconset/1024.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
@@ -30,7 +30,7 @@
       "package": "com.vincycheng23.minesweeper"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/AppIcons/Assets.xcassets/AppIcon.appiconset/1024.png"
     },
     "extra": {
       "eas": {

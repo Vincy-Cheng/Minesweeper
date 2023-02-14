@@ -16,7 +16,7 @@ const RecordScreen = (props: Props) => {
   const { colorScheme } = useColorScheme();
 
   const { records } = useAppSelector((state) => state.record);
-  console.log(records);
+
   return (
     <SafeAreaView className="bg-white dark:bg-zinc-800 h-full px-2">
       <View className="absolute -left-10 -bottom-2">

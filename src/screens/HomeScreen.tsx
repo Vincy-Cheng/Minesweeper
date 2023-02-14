@@ -24,7 +24,6 @@ const HomeScreen = ({}: HomeProps) => {
   const [loading, setLoading] = useState(false);
 
   const newGame = () => {
-    console.log('loading');
     const newBoard = createBoard({
       width: boardSize?.width || 10,
       height: boardSize?.height || 10,
@@ -44,7 +43,6 @@ const HomeScreen = ({}: HomeProps) => {
 
   useEffect(() => {
     if (loading === true) {
-      console.log('true');
       setTimeout(() => {
         newGame();
       }, 100);

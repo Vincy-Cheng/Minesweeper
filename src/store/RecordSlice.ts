@@ -27,9 +27,8 @@ const RecordSlice = createSlice({
       const record = state.records.find((record) => {
         record.startDate === action.payload.startDate;
       });
-      console.log(record);
+
       if (!record) {
-        console.log('push');
         state.records.push({
           startDate: action.payload.startDate,
           endDate: action.payload.endDate,
