@@ -157,17 +157,6 @@ const GameStateSlice = createSlice({
       state,
       action: PayloadAction<{ scale: number; pan: { x: number; y: number } }>
     ) => {
-      // console.log(action.payload, 'pan');
-      state.scaleNumber = action.payload.scale;
-      state.panNumber.x = action.payload.pan.x;
-      state.panNumber.y = action.payload.pan.y;
-    },
-
-    handlePinch: (
-      state,
-      action: PayloadAction<{ scale: number; pan: { x: number; y: number } }>
-    ) => {
-      // console.log(action.payload, 'pan');
       state.scaleNumber = action.payload.scale;
       state.panNumber.x = action.payload.pan.x;
       state.panNumber.y = action.payload.pan.y;

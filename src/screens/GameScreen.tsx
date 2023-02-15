@@ -30,7 +30,6 @@ const GameScreen = (props: Props) => {
   const { boardSize: settingSize, bombs: settingBombs } = useAppSelector(
     (state) => state.setting
   );
-  const { records } = useAppSelector((state) => state.record);
 
   const dispatch = useAppDispatch();
   const { startTimer, stopTimer } = useTimerCounter();
@@ -55,7 +54,7 @@ const GameScreen = (props: Props) => {
         startTimer();
       }
     }
-  }, [isTimerRunning, isGameOver]);
+  }, [isGameOver]);
 
   useEffect(() => {
     if (loading === true) {
@@ -82,7 +81,7 @@ const GameScreen = (props: Props) => {
     <View className="bg-white dark:bg-zinc-600 ">
       {loading && (
         <View className="h-full items-center dark:bg-zinc-800 justify-center ">
-          <ActivityIndicator size="large" color="#00ff00" />
+          <ActivityIndicator size="large" color="#fbbf24" />
         </View>
       )}
       <View className={clsx('', { ['hidden']: loading })}>

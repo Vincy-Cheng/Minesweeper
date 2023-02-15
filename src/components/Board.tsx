@@ -14,20 +14,21 @@ import {
 } from 'react-native-gesture-handler';
 
 import { handleCell, handlePan } from '../store/GameStateSlice';
+import { GameMode } from '../enum';
 
 type Props = {};
 
 const Board = (props: Props) => {
   const dispatch = useAppDispatch();
-  const { board, scaleNumber, panNumber, boardSize } = useAppSelector(
+  const { board, scaleNumber, panNumber, boardSize, mode } = useAppSelector(
     (state) => state.gameState
   );
 
-  const [gestureEnable, setGestureEnable] = useState<{
-    panEnable: boolean;
-    pinchEnable: boolean;
-    longPressEnable: boolean;
-  }>({ panEnable: true, pinchEnable: true, longPressEnable: true });
+  // const [gestureEnable, setGestureEnable] = useState<{
+  //   panEnable: boolean;
+  //   pinchEnable: boolean;
+  //   longPressEnable: boolean;
+  // }>({ panEnable: true, pinchEnable: true, longPressEnable: true });
 
   const scale = useRef(new Animated.Value(scaleNumber || 1)).current;
 
@@ -43,12 +44,8 @@ const Board = (props: Props) => {
   // Pan Gesture
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: () => gestureEnable.panEnable,
-      onPanResponderStart: () => {
-        setGestureEnable((prev) => {
-          return { ...prev, pinchEnable: false, longPressEnable: false };
-        });
-      },
+      onMoveShouldSetPanResponder: () => true,
+
       onPanResponderGrant: () => {
         pan.setOffset({
           x: pan.x._value,
@@ -77,14 +74,6 @@ const Board = (props: Props) => {
 
         pan.setValue({ ...tempXY });
         dispatch(handlePan({ scale: scaleNumber, pan: { ...tempXY } }));
-        setGestureEnable((prev) => {
-          return {
-            ...prev,
-            pinchEnable: true,
-            longPressEnable: true,
-            panEnable: true
-          };
-        });
       }
     })
   ).current;
@@ -103,11 +92,6 @@ const Board = (props: Props) => {
     nativeEvent
   }: HandlerStateChangeEvent<PinchGestureHandlerEventPayload>) => {
     // disable pan when pinch-zoom
-    if (nativeEvent.state === State.ACTIVE) {
-      setGestureEnable((prev) => {
-        return { ...prev, panEnable: false, longPressEnable: false };
-      });
-    }
 
     // when scale < 1, reset scale back to original (1)
     const nScale = nativeEvent.scale;
@@ -145,14 +129,6 @@ const Board = (props: Props) => {
       } else {
         dispatch(handlePan({ scale: nScale, pan: panNumber }));
       }
-      setGestureEnable((prev) => {
-        return {
-          ...prev,
-          pinchEnable: true,
-          longPressEnable: true,
-          panEnable: true
-        };
-      });
     }
   };
 
@@ -164,19 +140,6 @@ const Board = (props: Props) => {
   ) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       dispatch(handleCell({ row: rowIndex, col: colIndex }));
-    } else if (event.nativeEvent.state === State.BEGAN) {
-      setGestureEnable((prev) => {
-        return { ...prev, panEnable: false, pinchEnable: false };
-      });
-    } else if (event.nativeEvent.state === State.END) {
-      setGestureEnable((prev) => {
-        return {
-          ...prev,
-          pinchEnable: true,
-          longPressEnable: true,
-          panEnable: true
-        };
-      });
     }
   };
 
@@ -191,7 +154,6 @@ const Board = (props: Props) => {
         <PinchGestureHandler
           onGestureEvent={onPinchEvent}
           onHandlerStateChange={handlePinchStateChange}
-          enabled={gestureEnable.pinchEnable}
         >
           <Animated.View
             style={{
@@ -211,7 +173,7 @@ const Board = (props: Props) => {
                     }}
                     minDurationMs={500}
                     key={'cell-' + cellIndex}
-                    enabled={gestureEnable.longPressEnable}
+                    enabled={mode === GameMode.FLAG}
                   >
                     <View className="cell">
                       <Cell {...cell} />

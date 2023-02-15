@@ -42,7 +42,7 @@ const Cell = ({
       case 8:
         return 'text-black';
       default:
-        return 'dark:text-white';
+        return 'hidden';
     }
   };
 
