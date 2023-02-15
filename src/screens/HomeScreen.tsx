@@ -54,6 +54,11 @@ const HomeScreen = ({}: HomeProps) => {
       {loading && (
         <View className="h-full items-center dark:bg-zinc-800 justify-center ">
           <ActivityIndicator size="large" color="#fbbf24" />
+          <CustomText
+            content={'Loading game...'}
+            fontStyle={FontStyle.IBM_Plex_Mono_Bold}
+            styleClass="dark:text-white pt-2"
+          />
         </View>
       )}
 

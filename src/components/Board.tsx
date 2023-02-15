@@ -1,5 +1,5 @@
 import { View, PanResponder, Animated } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Cell from './Cell';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -181,7 +181,7 @@ const Board = (props: Props) => {
   };
 
   return (
-    <View>
+    <View className="h-full justify-center items-center">
       <Animated.View
         style={{
           transform: [{ translateX: pan.x }, { translateY: pan.y }]
@@ -202,26 +202,24 @@ const Board = (props: Props) => {
               ]
             }}
           >
-            <View className="h-full justify-center items-center">
-              {board.map((row, rowIndex) => (
-                <View key={rowIndex} className="flex flex-row">
-                  {row.map((cell, cellIndex) => (
-                    <LongPressGestureHandler
-                      onHandlerStateChange={(event) => {
-                        onLongPress(event, rowIndex, cellIndex);
-                      }}
-                      minDurationMs={500}
-                      key={'cell-' + cellIndex}
-                      enabled={gestureEnable.longPressEnable}
-                    >
-                      <View>
-                        <Cell {...cell} />
-                      </View>
-                    </LongPressGestureHandler>
-                  ))}
-                </View>
-              ))}
-            </View>
+            {board.map((row, rowIndex) => (
+              <View key={rowIndex} className="flex flex-row">
+                {row.map((cell, cellIndex) => (
+                  <LongPressGestureHandler
+                    onHandlerStateChange={(event) => {
+                      onLongPress(event, rowIndex, cellIndex);
+                    }}
+                    minDurationMs={500}
+                    key={'cell-' + cellIndex}
+                    enabled={gestureEnable.longPressEnable}
+                  >
+                    <View className="cell">
+                      <Cell {...cell} />
+                    </View>
+                  </LongPressGestureHandler>
+                ))}
+              </View>
+            ))}
           </Animated.View>
         </PinchGestureHandler>
       </Animated.View>

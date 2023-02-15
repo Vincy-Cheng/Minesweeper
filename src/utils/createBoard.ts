@@ -12,16 +12,29 @@ type CreateBoard = {
 export function createBoard({ width, height, bombs }: CreateBoard) {
   const matrix: ICell[][] = [];
 
+  let counter = 0;
+
   // create an empty bombs array first
+  console.log('create board');
 
-  for (let row = 0; row < height; row++) {
-    const newRow = [];
+  const doChunk = () => {
+    for (let row = 0; row < height; row++) {
+      const newRow = [];
 
-    for (let col = 0; col < width; col++) {
-      newRow.push(createCell(row, col));
+      for (let col = 0; col < width; col++) {
+        newRow.push(createCell(row, col));
+        counter++;
+      }
+      matrix.push(newRow);
     }
-    matrix.push(newRow);
-  }
+
+    if (counter < width * height) {
+      console.log(counter);
+      setTimeout(doChunk, 1);
+    }
+  };
+
+  doChunk();
 
   //  Array share address
   // insert bombs

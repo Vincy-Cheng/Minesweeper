@@ -44,7 +44,8 @@ const GameStateSlice = createSlice({
         board: ICell[][];
       }>
     ) => {
-      state.board = action.payload.board;
+      state.board = action.payload.board.map((arr) => arr.slice());
+
       state.boardSize = {
         width: action.payload.width,
         height: action.payload.height
@@ -55,6 +56,7 @@ const GameStateSlice = createSlice({
       state.isTimerRunning = true;
       state.statusMessage = '';
       state.startTime = new Date().toISOString();
+      state.panNumber = { x: 0, y: 0 };
     },
     handleCell: (
       state,
