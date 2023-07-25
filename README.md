@@ -22,9 +22,6 @@ It only tested the local development with iPhone 14 Pro simulator.
 It is a classic game called Minesweeper which you can design the board size and number of bombs by yourself. (The app will be very lag if you create a large board, e.g 100 x 100) There is a timer for recording your play time and a bombs counter that shows the number of bombs left.
 
 <img src="https://github.com/Vincy-Cheng/Minesweeper/assets/60846680/5ffe1041-7160-450d-b18b-5e01b2a3d083" alt="image" width="200">
-<br>
-
-<img src="https://github.com/Vincy-Cheng/Minesweeper/assets/60846680/67a48eef-7445-4365-b603-7e568d940d98" alt="image" width="200">
 
 You can also restart the game anytime by tapping the restart icon button.
 
