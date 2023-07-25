@@ -2,24 +2,25 @@ import { View, Modal, TouchableOpacity } from 'react-native';
 import React from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { closeReminder } from '../store/GameStateSlice';
-import CustomText from './CustomText';
 import { useColorScheme } from 'nativewind';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { FontStyle } from '../enum';
 
-type Props = {};
+type CustomModalProps = {
+  body: JSX.Element;
+  visible: boolean;
+  closeAction: () => void;
+};
 
-const CustomModal = (props: Props) => {
+const CustomModal = ({ body, visible, closeAction }: CustomModalProps) => {
   const { colorScheme } = useColorScheme();
-  const { statusMessage } = useAppSelector((state) => state.gameState);
-  const dispatch = useAppDispatch();
+
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={statusMessage !== ''}
+      visible={visible}
       onRequestClose={() => {
-        dispatch(closeReminder());
+        closeAction();
       }}
     >
       <View className="flex-1 justify-center items-center">
@@ -33,25 +34,13 @@ const CustomModal = (props: Props) => {
               name="close"
               size={20}
               onPress={() => {
-                dispatch(closeReminder());
+                closeAction();
               }}
               className="rounded-full"
               color={colorScheme === 'dark' ? '#ffffff' : '#000000'}
             />
           </TouchableOpacity>
-          <View className="px-3 space-y-2 modal-body">
-            <CustomText
-              styleClass="text-center text-xl dark:text-white"
-              content={statusMessage ?? ''}
-              fontStyle={FontStyle.IBM_Plex_Mono}
-            />
-
-            <CustomText
-              content={'Close the modal and start a new Game!'}
-              styleClass="text-center pb-4 text-neutral-600 dark:text-white"
-              fontStyle={FontStyle.IBM_Plex_Mono}
-            />
-          </View>
+          <View className="px-3 space-y-2 modal-body pb-1">{body}</View>
         </View>
       </View>
     </Modal>

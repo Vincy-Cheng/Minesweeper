@@ -1,21 +1,26 @@
 import { TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import CustomText from '../components/CustomText';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useColorScheme } from 'nativewind';
 import { FontStyle } from '../enum';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { clearRecord } from '../store/RecordSlice';
+import CustomModal from '../components/CustomModal';
 
 type Props = {};
 
 const RecordScreen = (props: Props) => {
   const navigation = useNavigation();
   const { colorScheme } = useColorScheme();
-
+  const dispatch = useAppDispatch();
   const { records } = useAppSelector((state) => state.record);
+
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <SafeAreaView className="bg-white dark:bg-zinc-800 h-full px-2">
@@ -36,12 +41,52 @@ const RecordScreen = (props: Props) => {
         </TouchableOpacity>
         <View className="flex-1 pr-[30px]">
           <CustomText
-            content={`Records ${records.length}`}
+            content={'Records'}
             styleClass={'text-center text-xl dark:text-white'}
             fontStyle={FontStyle.IBM_Plex_Mono}
           />
         </View>
+        <TouchableOpacity
+          onPress={() => {
+            setOpen(true);
+          }}
+        >
+          <EvilIcons
+            name="trash"
+            size={30}
+            color={colorScheme === 'dark' ? '#ffffff' : '#000000'}
+          />
+        </TouchableOpacity>
       </View>
+      <CustomModal
+        visible={open}
+        closeAction={() => {
+          setOpen(false);
+        }}
+        body={
+          <>
+            <CustomText
+              content={'Confirm to delete all the records?'}
+              styleClass="text-center pb-4 text-neutral-600 dark:text-white"
+              fontStyle={FontStyle.IBM_Plex_Mono}
+            />
+            <TouchableOpacity
+              className="bg-red-500 rounded-full p-1"
+              onPress={() => {
+                dispatch(clearRecord());
+                console.log('Clear all the record');
+                setOpen(false);
+              }}
+            >
+              <CustomText
+                content={'Confirm'}
+                styleClass="text-center text-white"
+                fontStyle={FontStyle.IBM_Plex_Mono}
+              />
+            </TouchableOpacity>
+          </>
+        }
+      />
       <View className="pt-4 px-10">
         {records
           .slice(-5)
