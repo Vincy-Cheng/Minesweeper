@@ -144,8 +144,9 @@ const Board = (props: Props) => {
   };
 
   return (
-    <View className="h-full justify-center items-center">
+    <View className="flex h-screen items-center ">
       <Animated.View
+        className="mt-20"
         style={{
           transform: [{ translateX: pan.x }, { translateY: pan.y }]
         }}

@@ -11,7 +11,7 @@ export function gameStatus(
   board.forEach((row) => {
     row.forEach((col) => {
       if (mode === GameMode.FLAG) {
-        if (col.isFlagged) {
+        if (col.isFlagged && col.isBomb) {
           counter++;
         }
       } else {

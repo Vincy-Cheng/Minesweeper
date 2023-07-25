@@ -38,7 +38,7 @@ const GameScreen = (props: Props) => {
   useEffect(() => {
     if (isGameOver) {
       stopTimer();
-      if (statusMessage !== '💥' && !isTimerRunning) {
+      if (statusMessage !== '💥') {
         dispatch(
           addRecord({
             startDate: startTime,
@@ -48,6 +48,7 @@ const GameScreen = (props: Props) => {
             time: gameTime
           })
         );
+        console.log('Record is added');
       }
     } else {
       if (isTimerRunning) {

@@ -36,7 +36,7 @@ const RecordScreen = (props: Props) => {
         </TouchableOpacity>
         <View className="flex-1 pr-[30px]">
           <CustomText
-            content={'Records'}
+            content={`Records ${records.length}`}
             styleClass={'text-center text-xl dark:text-white'}
             fontStyle={FontStyle.IBM_Plex_Mono}
           />
