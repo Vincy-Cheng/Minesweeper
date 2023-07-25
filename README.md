@@ -31,7 +31,6 @@ You can also restart the game anytime by tapping the restart icon button.
 There are 2 modes, Flag mode, and Shovel mode.
 <br>
 <img width="200" alt="image" src="https://github.com/Vincy-Cheng/Minesweeper/assets/60846680/40cfbd32-a68d-4ba2-bff5-320b0cb08f9d">
-
 <img width="200" alt="image" src="https://github.com/Vincy-Cheng/Minesweeper/assets/60846680/68fed447-ee47-4bca-ac2e-357e1cecc922">
 
 
